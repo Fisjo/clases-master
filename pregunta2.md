@@ -1,1 +1,0 @@
-Hola, rubias o morenas?
