@@ -1,3 +1,3 @@
 Hola, rubias o morenas?
 
-Morenas 
+las dos 
