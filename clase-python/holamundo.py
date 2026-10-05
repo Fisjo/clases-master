@@ -51,3 +51,44 @@ print(persona["soltero"]) #imprime True
 nombre_diccionario = persona.get("nombre") #imprime Nacho
 print(nombre_diccionario)
 
+
+# listas
+frutas = ["manzana", "pera", "plátano", "naranja"]
+print(frutas[0]) #imprime manzana
+print(frutas[1]) #imprime pera
+print(frutas[2]) #imprime plátano
+print(frutas[3]) #imprime naranja
+
+print(len(frutas)) #imprime 4, que es la longitud de la lista frutas
+print(frutas)
+print(frutas[0:2]) #imprime ['manzana', 'pera']
+print(frutas[1:]) #imprime ['pera', 'plátano', 'naranja']
+print(frutas[:3]) #imprime ['manzana', 'pera', 'plátano']
+print(frutas[-1]) #imprime naranja
+
+frutas.append("kiwi") #añade kiwi al final de la lista
+print(frutas) #imprime ['manzana', 'pera', 'plátano', 'kiwi']
+
+frutas.insert(1, "sandía") #añade sandía en la posición 1
+print(frutas) #imprime ['manzana', 'sandía', 'pera', 'plátano', 'kiwi']
+
+frutas.remove("pera") #elimina pera de la lista
+print(frutas) #imprime ['manzana', 'sandía', 'plátano', 'kiwi']
+
+frutas.pop() #elimina el último elemento de la lista
+print(frutas) #imprime ['manzana', 'sandía', 'plátano']
+
+frutas.sort() #ordena la lista de frutas alfabéticamente
+print(frutas) #imprime ['manzana', 'naranja', 'plátano', 'sandía']
+
+frutas.reverse() #invierte el orden de la lista de frutas
+print(frutas) #imprime ['sandía', 'plátano', 'naranja', 'manzana']
+
+compras = ["leche", "huevos", "pan", "mantequilla"]
+compras.append("frutas") #añade frutas al final de la lista
+compras.insert(2, "verduras") #añade verduras en la posición 2
+compras.pop() #elimina el último elemento de la lista
+print(compras) #imprime ['leche', 'huevos', 'verduras', 'pan', 'mantequilla']
+
+compras_ordenadas = sorted(compras) #crea una nueva lista con las compras ordenadas alfabéticamente
+print(compras_ordenadas) #imprime ['leche', 'mantequilla', 'pan', 'verduras', 'huevos']
