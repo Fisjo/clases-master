@@ -1,33 +1,49 @@
-# Prueba de Python y Git
+# Proyecto de aprendizaje: Python y Git
 
-Este repositorio reúne varios ejercicios de aprendizaje en Python y una práctica centrada en Git. La idea principal no es que sea un proyecto grande o completo, sino trabajar conceptos básicos de programación junto con prácticas de colaboración en control de versiones.
+Este repositorio es un conjunto de ejercicios prácticos para aprender Python y, además, una pequeña práctica de trabajo con Git. No se trata de un proyecto de producción, sino de un espacio para probar conceptos básicos de programación, manipular variables, escribir funciones y familiarizarse con el flujo de trabajo de control de versiones.
 
-## Estructura del proyecto
+## Estructura del repositorio
 
-- `clase-git/`: carpeta creada principalmente para practicar Git, como `pull requests`, `merges`, resolución de conflictos y trabajo con ramas.
-  - incluye algunos scripts sencillos y archivos de ejemplo, pero su objetivo principal es la práctica de flujo de trabajo con Git.
-- `clase-python/holamundo.py`: ejemplo introductorio de Python para practicar variables, cadenas, listas y estructuras básicas.
+- `clase-python/holamundo.py`: archivo principal de práctica de Python. Aquí se trabajan conceptos básicos como:
+  - variables
+  - cadenas de texto
+  - listas y diccionarios
+  - tuplas
+  - operadores
+  - condicionales
+  - comparaciones y asignaciones
 
-## Objetivos
+- `clase-git/`: carpeta creada principalmente como ejercicio de Git. En ella hay varios archivos y scripts sencillos, pero su objetivo real era practicar:
+  - ramas
+  - commits
+  - merges
+  - pull requests
+  - resolución de conflictos
+  - flujo de trabajo colaborativo
 
-El proyecto busca practicar:
+## Objetivos de aprendizaje
+
+Este proyecto busca practicar:
 
 - fundamentos de Python
-- uso de variables, funciones y estructuras básicas
-- lectura de entradas por consola
-- operaciones matemáticas sencillas
-- lógica de programación aplicada a ejemplos pequeños
-- trabajo con Git y GitHub
-- creación de ramas, commits, merges y pull requests
-- resolución de conflictos y colaboración en equipo
+- manejo de tipos de datos
+- uso de estructuras como listas, diccionarios y tuplas
+- uso de condicionales y operadores
+- escritura de funciones simples
+- entrada y salida por consola
+- lógica de programación básica
+- trabajo con Git y GitHub en equipo
 
 ## Requisitos
 
-Necesitas tener Python 3 instalado en tu sistema, además de Git para trabajar con el historial de cambios y la parte de colaboración.
+Necesitas tener instalado:
+
+- Python 3
+- Git
 
 ## Cómo ejecutarlo
 
-Para los scripts de Python:
+Para ejecutar los scripts de la carpeta de Git:
 
 ```bash
 cd clase-git
@@ -36,17 +52,17 @@ python3 interes-compuesto.py
 python3 numeros-aleatorios.py
 ```
 
-Y para el ejemplo introductorio:
+Para ejecutar el ejemplo introductorio de Python:
 
 ```bash
 cd clase-python
 python3 holamundo.py
 ```
 
-## Estado
-
-Proyecto de aprendizaje básico, orientado tanto a practicar Python como a familiarizarse con el uso de Git y GitHub en un entorno de ejercicios.
-
 ## Nota importante
 
-La carpeta `clase-git` no representa un proyecto funcional complejo; fue sobre todo una práctica para aprender a manejar ramas, commits, merges y pull requests, así como el flujo de trabajo colaborativo con Git.
+La carpeta `clase-git` no es un proyecto funcional complejo ni un producto final. Fue principalmente una práctica para aprender a trabajar con Git, ramas, merges y pull requests. La parte más importante de ese ejercicio era el proceso de colaboración y manejo del repositorio, no la lógica del programa en sí.
+
+## Estado del proyecto
+
+Proyecto de aprendizaje básico, orientado a practicar programación con Python y familiarizarse con Git y GitHub en un entorno sencillo.
