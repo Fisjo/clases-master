@@ -1,4 +1,4 @@
-# Proyecto de aprendizaje: Python y Git
+# Repositorio de clases de Máster de IA, Data & Cloud @ EDEM Escuela de Empresarios
 
 Este repositorio es un conjunto de ejercicios prácticos para aprender Python y, además, una pequeña práctica de trabajo con Git. No se trata de un proyecto de producción, sino de un espacio para probar conceptos básicos de programación, manipular variables, escribir funciones y familiarizarse con el flujo de trabajo de control de versiones.
 
