@@ -36,3 +36,18 @@ print(len(nombre)) #imprime 5, que es la longitud de la palabra Nacho
 print(nombre[0]) #imprime la letra N
 print(apellido[-1]) #imprime la letra o
 
+persona = {
+    "nombre": "Nacho",
+    "apellido": "Pinazo",
+    "edad": 30,
+    "ciudad": "Madrid",
+    "soltero": True
+}
+print(persona["nombre"]) #imprime Nacho
+print(persona["edad"]) #imprime 30
+print(persona["ciudad"]) #imprime Madrid
+print(persona["soltero"]) #imprime True
+
+nombre_diccionario = persona.get("nombre") #imprime Nacho
+print(nombre_diccionario)
+
