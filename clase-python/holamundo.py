@@ -152,3 +152,40 @@ print(a) #imprime 24
 a /= 2 #equivale a a = a / 2
 print(a) #imprime 12.0
 
+### CONDICIONALES ###
+
+# Los condicionales son estructuras de control que permiten ejecutar un bloque de código u otro en función de si se cumple o no una condición. En Python, existen varias formas de escribir condicionales, como if, elif y else.
+
+age = 18 
+
+if age >= 18:
+    print("Eres mayor de edad")
+else:
+    print("Eres menor de edad")
+
+culpable = True
+
+if culpable:
+    print("Eres culpable")
+else:
+    print("Eres inocente")
+    
+
+x = 10
+
+if x % 2 == 0:
+    print("x es par")
+else:
+    print("x es impar")
+
+person = {
+    "age" : 17,
+    "sonOfBoss" : True
+}
+
+if person["age"] >= 18:
+    print("Eres mayor de edad")
+elif person["sonOfBoss"]:
+    print("Eres hijo del jefe")
+else:
+    print("Eres menor de edad y no eres hijo del jefe")
