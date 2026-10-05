@@ -92,3 +92,20 @@ print(compras) #imprime ['leche', 'huevos', 'verduras', 'pan', 'mantequilla']
 
 compras_ordenadas = sorted(compras) #crea una nueva lista con las compras ordenadas alfabéticamente
 print(compras_ordenadas) #imprime ['leche', 'mantequilla', 'pan', 'verduras', 'huevos']
+
+###### TUPLAS ######
+
+# las tuplas son inmutables, es decir, no se pueden modificar una vez creadas
+
+fecha_nacimiento: tuple = ("30", "06", "1993")
+print(fecha_nacimiento[0]) #imprime 30
+print(fecha_nacimiento[1]) #imprime 06
+print(fecha_nacimiento[2]) #imprime 1993
+
+### CONSTANTES ###
+
+# Las constantes son variables que no cambian su valor a lo largo del programa. En Python, no existe una forma de declarar una constante, pero se suele utilizar la convención de escribir el nombre de la variable en mayúsculas para indicar que es una constante.    
+
+PI: float = 3.14159
+IVA: float = 0.21
+
