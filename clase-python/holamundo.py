@@ -109,3 +109,46 @@ print(fecha_nacimiento[2]) #imprime 1993
 PI: float = 3.14159
 IVA: float = 0.21
 
+### OPERADORES ###
+
+# Los operadores son símbolos que realizan operaciones sobre uno o más valores. En Python, existen varios tipos de operadores, como los operadores aritméticos, los operadores de comparación, los operadores lógicos, etc.
+
+print(7 == 7) #imprime True
+print(7 != 7) #imprime False
+print(7 > 7) #imprime False
+print(7 < 7) #imprime False
+print(7 >= 7) #imprime True
+print(7 <= 7) #imprime True
+
+## OPERADORES DE PERTENENCIA ###
+
+# Los operadores de pertenencia son operadores que permiten comprobar si un valor pertenece o no a una secuencia (como una lista, una tupla o un string). En Python, existen dos operadores de pertenencia: in y not in.
+
+nombre = "Nacho"
+print("N" in nombre) #imprime True
+print("n" in nombre) #imprime False
+print("a" not in nombre) #imprime False
+
+frutas = ["manzana", "pera", "plátano", "naranja"]
+print("manzana" in frutas) #imprime True
+print("kiwi" in frutas) #imprime False  
+print("kiwi" not in frutas) #imprime True
+
+### OPERADORES ASIGNACIÓN ###
+
+# Los operadores de asignación son operadores que permiten asignar un valor a una variable. En Python, existen varios operadores de asignación, como el operador de asignación simple (=), el operador de asignación con suma (+=), el operador de asignación con resta (-=), etc.
+
+a = 5
+
+a += 3 #equivale a a = a + 3
+print(a) #imprime 8
+
+a -= 2 #equivale a a = a - 2
+print(a) #imprime 6
+
+a *= 4 #equivale a a = a * 4
+print(a) #imprime 24
+
+a /= 2 #equivale a a = a / 2
+print(a) #imprime 12.0
+
