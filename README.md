@@ -1,36 +1,52 @@
-# Prueba
+# Prueba de Python
 
-Este proyecto es un pequeño repositorio de scripts en Python para practicar programación básica, cálculos matemáticos y manejo de entradas por consola.
+Este repositorio contiene varios ejercicios y scripts sencillos para practicar programación en Python. Está pensado como un proyecto de aprendizaje básico para trabajar con funciones, entradas por consola, cálculos matemáticos y primeros ejemplos de automatización.
 
-## ¿Qué contiene?
+## Estructura del proyecto
 
-- `app.py`: calculadora simple con operaciones de suma, resta, multiplicación y división.
-- `interes-compuesto.py`: calcula el interés compuesto ajustado a la inflación, mostrando el valor nominal, el valor real y la rentabilidad real anual.
-- `numeros-aleatorios.py`: genera números aleatorios y listas aleatorias dentro de un rango indicado por el usuario.
-- `fichero.txt`: archivo de texto de ejemplo.
+- `clase-git/app.py`: calculadora simple con operaciones de suma, resta, multiplicación y división.
+- `clase-git/interes-compuesto.py`: calcula el valor futuro de una inversión considerando rentabilidad e inflación.
+- `clase-git/numeros-aleatorios.py`: genera números y listas aleatorias en un rango indicado por el usuario.
+- `clase-git/fichero.txt`: archivo de texto de ejemplo.
+- `clase-python/holamundo.py`: ejemplo introductorio de Python con variables, cadenas, listas y diccionarios.
 
-## Objetivo del proyecto
+## Objetivos
 
-El objetivo es aprender a:
+El proyecto busca practicar:
 
-- escribir funciones en Python
-- pedir datos al usuario desde la terminal
-- realizar cálculos matemáticos
-- crear programas sencillos y ejecutables de forma independiente
-- practicar la lógica de programación con ejemplos concretos
+- escritura de funciones en Python
+- entrada y salida por consola
+- operaciones matemáticas básicas
+- uso de variables, listas y diccionarios
+- lógica de programación aplicada a ejemplos pequeños
+- ejecución de scripts de forma independiente
+
+## Requisitos
+
+Necesitas tener Python 3 instalado en tu sistema.
 
 ## Cómo ejecutarlo
 
-Puedes ejecutar cualquiera de los scripts desde la terminal con:
+Desde la raíz del proyecto, puedes ejecutar cada archivo con el intérprete de Python:
 
 ```bash
-python app.py
-python interes-compuesto.py
-python numeros-aleatorios.py
+cd clase-git
+python3 app.py
+python3 interes-compuesto.py
+python3 numeros-aleatorios.py
 ```
 
-Cada archivo funciona como un programa independiente y solicita la información necesaria en tiempo de ejecución.
+Y para el ejemplo introductorio:
+
+```bash
+cd clase-python
+python3 holamundo.py
+```
 
 ## Estado
 
-Proyecto de aprendizaje básico, pensado para practicar Python con ejemplos pequeños y funcionales.
+Proyecto de aprendizaje básico, orientado a practicar conceptos iniciales de Python con ejemplos pequeños y funcionales.
+
+## Autor
+
+Repositorio de práctica personal para aprender y reforzar fundamentos de programación con Python.
