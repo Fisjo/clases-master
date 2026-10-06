@@ -49,3 +49,27 @@ personas = ["Juan", "María", "Pedro", "Nacho", "Lucía", "Sofía", "Carlos", "A
 
 for persona in personas:
     print(persona)  # Salida: Juan, María, Pedro, Nacho, Lucía, Sofía, Carlos, Ana, Luis, Marta  
+
+colores = ["rojo", "verde", "azul"]
+
+for color in colores:
+    print(color)  # Salida: rojo, verde, azul
+
+numeros = [1, 2, 3, 4]
+
+for i, num in enumerate(numeros):
+    numeros[i] = num * 2  # Multiplicamos cada elemento por 2 y lo sobrescribimos
+
+print(numeros)  # Resultado: [2, 4, 6, 8]
+
+numeros = [1, 2, 3, 4]
+
+for i in range(len(numeros)):
+    numeros[i] = numeros[i] + 10  # Sumamos 10 a cada elemento
+
+print(numeros)  # Resultado: [11, 12, 13, 14]
+
+numeros = [1, 2, 3, 4]
+numeros = [num * 2 for num in numeros]  # Sobrescribe la variable 'numeros' entera
+
+print(numeros)  # Resultado: [2, 4, 6, 8]
