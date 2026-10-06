@@ -55,21 +55,44 @@ colores = ["rojo", "verde", "azul"]
 for color in colores:
     print(color)  # Salida: rojo, verde, azul
 
-numeros = [1, 2, 3, 4]
 
-for i, num in enumerate(numeros):
-    numeros[i] = num * 2  # Multiplicamos cada elemento por 2 y lo sobrescribimos
+contador = 7
+while contador < 12:
+    print(contador)  # Salida: 7, 8, 9, 10, 11
+    contador += 1
 
-print(numeros)  # Resultado: [2, 4, 6, 8]
 
-numeros = [1, 2, 3, 4]
+contador = 5 
+while contador > 0: 
+    print(contador)
+    contador -= 1
+print("¡Despegue!")
 
-for i in range(len(numeros)):
-    numeros[i] = numeros[i] + 10  # Sumamos 10 a cada elemento
+num = 5
 
-print(numeros)  # Resultado: [11, 12, 13, 14]
+while num > 0: 
+    sum = ""
+    nuevo_num = num
+    while nuevo_num > 0:
+        sum  += f"{nuevo_num} "
+        nuevo_num -= 1
+    print(sum)
+    num -= 1
 
-numeros = [1, 2, 3, 4]
-numeros = [num * 2 for num in numeros]  # Sobrescribe la variable 'numeros' entera
 
-print(numeros)  # Resultado: [2, 4, 6, 8]
+numero = 150
+
+while numero < 351:
+    if numero % 5 == 0 and numero % 7 == 0: 
+        print(numero)
+    numero += 1
+
+
+frase = "Python es divertido"
+i = 0
+
+while i < len(frase):
+    print(f"Índice: {i}, Letra: {frase[i]}")
+    if frase[i] == " ":
+        print(f"¡Espacio encontrado!")
+    i += 1
