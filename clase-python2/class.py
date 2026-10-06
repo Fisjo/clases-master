@@ -8,6 +8,8 @@ numeros.add(1)
 numeros.add(2)
 numeros.add(2)  # No se agregará porque ya existe
 
+## REPASO CLASE 1 ##
+
 print(numeros)  # Salida: {1, 2}
 
 persona = {
@@ -34,3 +36,4 @@ elif len(contrasena) > longitud_maxima:
     print("La contraseña es demasiado larga.")
 else:
     print("La contraseña tiene una longitud válida.")
+
