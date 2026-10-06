@@ -37,3 +37,15 @@ elif len(contrasena) > longitud_maxima:
 else:
     print("La contraseña tiene una longitud válida.")
 
+
+## BUCLES ##
+
+# Los bucles permiten ejecutar un bloque de código varias veces. En Python, los bucles más comunes son el bucle for y el bucle while.
+
+for i in range(5):
+    print(i)  # Salida: 0, 1, 2, 3, 4
+
+personas = ["Juan", "María", "Pedro", "Nacho", "Lucía", "Sofía", "Carlos", "Ana", "Luis", "Marta"]
+
+for persona in personas:
+    print(persona)  # Salida: Juan, María, Pedro, Nacho, Lucía, Sofía, Carlos, Ana, Luis, Marta  
