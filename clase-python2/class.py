@@ -255,3 +255,13 @@ print(resta(10, 5))  # Salida: 5
 
 factorial = lambda n: 1 if n == 0 else n * factorial(n - 1)
 print(factorial(5))  # Salida: 120
+
+primera_letra = lambda palabra: palabra[0]
+print(primera_letra("Python"))  # Salida: P
+
+mas_diez = lambda a : a + 10
+print(mas_diez(5))  # Salida: 15
+
+doble = lambda a : 2 * a
+print(doble(7))  # Salida: 14
+
