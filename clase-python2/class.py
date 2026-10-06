@@ -1,17 +1,40 @@
-## SETS ##
+"""
+Clase 2 de Python: sets, bucles, funciones y lambdas.
 
-# Los sets son colecciones de elementos únicos, es decir, no permiten duplicados. Se pueden crear utilizando llaves {} o la función set().
+Contenido:
+    1. Sets
+    2. Repaso de la clase 1 (diccionarios y condicionales)
+    3. Bucles
+        3.1 for
+        3.2 while
+    4. Funciones
+        4.1 Funciones básicas
+        4.2 Docstrings
+        4.3 Ejercicios
+        4.4 Parámetros por defecto
+    5. Funciones lambda
+"""
 
+# =============================================================================
+# 1. SETS
+# =============================================================================
+
+# Los sets son colecciones de elementos únicos, es decir, no permiten
+# duplicados. Se pueden crear utilizando llaves {} o la función set().
 numeros = set()
 
 numeros.add(1)
 numeros.add(2)
 numeros.add(2)  # No se agregará porque ya existe
 
-## REPASO CLASE 1 ##
-
 print(numeros)  # Salida: {1, 2}
 
+
+# =============================================================================
+# 2. REPASO DE LA CLASE 1
+# =============================================================================
+
+# --- Diccionarios anidados ---
 persona = {
     "nombre": "Juan",
     "edad": 30,
@@ -26,6 +49,7 @@ print(persona["nombre"])  # Salida: Juan
 print(persona["hobbies"][1])  # Salida: lectura
 print(persona["contacto"]["email"]) # Salida: juan@example.com
 
+# --- Condicionales: validar la longitud de una contraseña ---
 contrasena = "mimamamemima"
 longitud_minima = 8
 longitud_maxima = 20
@@ -38,39 +62,46 @@ else:
     print("La contraseña tiene una longitud válida.")
 
 
-## BUCLES ##
+# =============================================================================
+# 3. BUCLES
+# =============================================================================
 
-# Los bucles permiten ejecutar un bloque de código varias veces. En Python, los bucles más comunes son el bucle for y el bucle while.
+# Los bucles permiten ejecutar un bloque de código varias veces. En Python,
+# los bucles más comunes son el bucle for y el bucle while.
 
+# --- 3.1 Bucle for ---
 for i in range(5):
     print(i)  # Salida: 0, 1, 2, 3, 4
 
 personas = ["Juan", "María", "Pedro", "Nacho", "Lucía", "Sofía", "Carlos", "Ana", "Luis", "Marta"]
 
 for persona in personas:
-    print(persona)  # Salida: Juan, María, Pedro, Nacho, Lucía, Sofía, Carlos, Ana, Luis, Marta  
+    print(persona)  # Salida: Juan, María, Pedro, Nacho, Lucía, Sofía, Carlos, Ana, Luis, Marta
 
 colores = ["rojo", "verde", "azul"]
 
 for color in colores:
     print(color)  # Salida: rojo, verde, azul
 
+# --- 3.2 Bucle while ---
 
+# Cuenta hacia arriba
 contador = 7
 while contador < 12:
     print(contador)  # Salida: 7, 8, 9, 10, 11
     contador += 1
 
-
-contador = 5 
-while contador > 0: 
+# Cuenta atrás
+contador = 5
+while contador > 0:
     print(contador)
     contador -= 1
 print("¡Despegue!")
 
+# Bucles anidados: imprime 5 4 3 2 1 / 4 3 2 1 / ... / 1
 num = 5
 
-while num > 0: 
+while num > 0:
     sum = ""
     nuevo_num = num
     while nuevo_num > 0:
@@ -79,15 +110,15 @@ while num > 0:
     print(sum)
     num -= 1
 
-
+# Múltiplos de 5 y de 7 entre 150 y 350
 numero = 150
 
 while numero < 351:
-    if numero % 5 == 0 and numero % 7 == 0: 
+    if numero % 5 == 0 and numero % 7 == 0:
         print(numero)
     numero += 1
 
-
+# Recorrer un string letra a letra
 frase = "Python es divertido"
 i = 0
 
@@ -98,9 +129,14 @@ while i < len(frase):
     i += 1
 
 
-## FUNCIONES ##
+# =============================================================================
+# 4. FUNCIONES
+# =============================================================================
 
-# Las funciones son bloques de código reutilizables que realizan una tarea específica. Se definen utilizando la palabra clave def.
+# Las funciones son bloques de código reutilizables que realizan una tarea
+# específica. Se definen utilizando la palabra clave def.
+
+# --- 4.1 Funciones básicas ---
 
 def saludar(nombre):
     print(f"Hola, {nombre}!")
@@ -117,20 +153,22 @@ def raiz_cuadrada(numero):
         return "No se puede calcular la raíz cuadrada de un número negativo."
     else:
         return numero ** 0.5
-    
+
 print(raiz_cuadrada(15))  # Salida: 3.872983346207417
 print(raiz_cuadrada(-4))  # Salida: No se puede calcular la raíz cuadrada de un número negativo.
 
-## docstrings ##
+# --- 4.2 Docstrings ---
+# Un docstring es un string entre comillas triples justo después del `def`.
+# Documenta la función y se puede consultar con `__doc__`.
 
 def describir_persona(nombre, edad):
     """
     Esta función recibe el nombre y la edad de una persona y devuelve una descripción.
-    
+
     Parámetros:
     nombre (str): El nombre de la persona.
     edad (int): La edad de la persona.
-    
+
     Retorna:
     str: Una descripción de la persona.
     """
@@ -139,7 +177,9 @@ def describir_persona(nombre, edad):
 print(describir_persona("Juan", 30))  # Salida: Juan tiene 30 años.
 print(describir_persona.__doc__)  # Salida: Esta función recibe el nombre y la edad de una persona y devuelve una descripción.
 
+# --- 4.3 Ejercicios ---
 
+# Operaciones aritméticas y áreas
 def resta(a, b):
     return a - b
 
@@ -153,7 +193,6 @@ print(area_rectangulo(5, 3))  # Salida: 15
 def area_cuadrado(lado):
     ''' retorna el lado * lado'''
     return lado * lado
-    
 
 def area_triangulo(base, altura):
     ''' retorna base * altura / 2'''
@@ -161,20 +200,11 @@ def area_triangulo(base, altura):
 
 area_total = area_cuadrado(10) + 5 * area_triangulo(2, 4)
 
+# Strings
 def presentarse(nombre, apellido, edad):
     return f"Hola, me llamo {nombre} {apellido} y tengo {edad} años."
 
 print(presentarse("Juan", "Pérez", 30))  # Salida: Hola, me llamo Juan Pérez y tengo 30 años.
-
-def calcular_promedio(numeros):
-    total = 0
-    # Completa el bucle y el return
-    for i in numeros: 
-        total += i
-    return total / len(numeros)
-
-calificaciones = [85, 90, 78, 92, 88]
-print(calcular_promedio(calificaciones))  # Salida: 86.6
 
 def cuenta_caracteres(cadena):
     contador = 0
@@ -194,18 +224,6 @@ def ultimo_caracter(texto):
 texto = "Python"
 print(ultimo_caracter(texto))  # Salida: n
 
-def comparar(a, b):
-    if a == b: 
-        return "Son iguales"
-    elif a > b: 
-        return "El primero es mayor"
-    else: 
-        return "El segundo es mayor"
-
-a = 10
-b = 5
-print(comparar(a, b))  # Salida: El primero es mayor
-
 def contar_letra(texto, letra):
     count = 0
     texto = texto.upper()
@@ -219,10 +237,34 @@ texto = "Hola, ¿cómo estás?"
 letra = "o"
 print(contar_letra(texto, letra))  # Salida: 2
 
+# Listas
+def calcular_promedio(numeros):
+    total = 0
+    # Completa el bucle y el return
+    for i in numeros:
+        total += i
+    return total / len(numeros)
 
+calificaciones = [85, 90, 78, 92, 88]
+print(calcular_promedio(calificaciones))  # Salida: 86.6
+
+# Condicionales
+def comparar(a, b):
+    if a == b:
+        return "Son iguales"
+    elif a > b:
+        return "El primero es mayor"
+    else:
+        return "El segundo es mayor"
+
+a = 10
+b = 5
+print(comparar(a, b))  # Salida: El primero es mayor
+
+# Bucles dentro de funciones
 def cuenta_atras(n):
     while n > 0:
-        if n % 4 == 0: 
+        if n % 4 == 0:
             print("Pum!")
         else:
             print(n)
@@ -231,21 +273,29 @@ def cuenta_atras(n):
 
 cuenta_atras(8)
 
+# --- 4.4 Parámetros por defecto ---
+# Si no se pasa el argumento, el parámetro toma su valor por defecto.
+
 def venta_online(pedido, fecha_entrega, incidencia=False):
-    if incidencia == True: 
+    if incidencia == True:
         return "Contacte con Att. Cliente"
-    else: 
+    else:
         return f"Su pedido {pedido} se entregará el {fecha_entrega}"
-    
+
 venta1 = venta_online("Libro de Python", "2024-07-15")
 print(venta1)  # Salida: Su pedido Libro de Python se entregará el 2024-07-15
 
 venta2 = venta_online("Libro de Python", "2024-07-15", incidencia=True)
 print(venta2)  # Salida: Contacte con Att. Cliente
 
-## FUNCIONES LAMBDA ##
 
-# Las funciones lambda son funciones anónimas que se definen utilizando la palabra clave lambda. Se utilizan para crear funciones pequeñas y de una sola línea.
+# =============================================================================
+# 5. FUNCIONES LAMBDA
+# =============================================================================
+
+# Las funciones lambda son funciones anónimas que se definen utilizando la
+# palabra clave lambda. Se utilizan para crear funciones pequeñas y de una
+# sola línea.
 
 suma = lambda x, y: x + y
 print(suma(3, 5))  # Salida: 8
@@ -264,4 +314,3 @@ print(mas_diez(5))  # Salida: 15
 
 doble = lambda a : 2 * a
 print(doble(7))  # Salida: 14
-
