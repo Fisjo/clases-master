@@ -4,7 +4,7 @@ Este repositorio es un conjunto de ejercicios prácticos para aprender Python y,
 
 ## Estructura del repositorio
 
-- `clase-python/holamundo.py`: archivo principal de práctica de Python. Aquí se trabajan conceptos básicos como:
+- `clase-python1/holamundo.py`: archivo principal de práctica de Python. Aquí se trabajan conceptos básicos como:
   - variables
   - cadenas de texto
   - listas y diccionarios
@@ -12,6 +12,13 @@ Este repositorio es un conjunto de ejercicios prácticos para aprender Python y,
   - operadores
   - condicionales
   - comparaciones y asignaciones
+
+- `clase-python2/class.py`: segunda clase de Python. Se trabajan:
+  - sets
+  - repaso de diccionarios y condicionales
+  - bucles (`for` y `while`)
+  - funciones (básicas, docstrings, parámetros por defecto)
+  - funciones lambda
 
 - `clase-git/`: carpeta creada principalmente como ejercicio de Git. En ella hay varios archivos y scripts sencillos, pero su objetivo real era practicar:
   - ramas
@@ -29,6 +36,7 @@ Este proyecto busca practicar:
 - manejo de tipos de datos
 - uso de estructuras como listas, diccionarios y tuplas
 - uso de condicionales y operadores
+- bucles, sets y funciones (incluidas las lambda)
 - escritura de funciones simples
 - entrada y salida por consola
 - lógica de programación básica
@@ -55,8 +63,15 @@ python3 numeros-aleatorios.py
 Para ejecutar el ejemplo introductorio de Python:
 
 ```bash
-cd clase-python
+cd clase-python1
 python3 holamundo.py
+```
+
+Para ejecutar la segunda clase de Python:
+
+```bash
+cd clase-python2
+python3 class.py
 ```
 
 ## Nota importante
