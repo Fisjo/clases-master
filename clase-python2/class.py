@@ -243,3 +243,15 @@ print(venta1)  # Salida: Su pedido Libro de Python se entregará el 2024-07-15
 venta2 = venta_online("Libro de Python", "2024-07-15", incidencia=True)
 print(venta2)  # Salida: Contacte con Att. Cliente
 
+## FUNCIONES LAMBDA ##
+
+# Las funciones lambda son funciones anónimas que se definen utilizando la palabra clave lambda. Se utilizan para crear funciones pequeñas y de una sola línea.
+
+suma = lambda x, y: x + y
+print(suma(3, 5))  # Salida: 8
+
+resta = lambda x, y: x - y
+print(resta(10, 5))  # Salida: 5
+
+factorial = lambda n: 1 if n == 0 else n * factorial(n - 1)
+print(factorial(5))  # Salida: 120
