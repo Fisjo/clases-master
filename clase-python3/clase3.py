@@ -114,3 +114,19 @@ while contador < 5:
     except ValueError:
         contador += 1
         print(f"Error: Debes ingresar un número entero válido. Intentos restantes: {5 - contador}")
+
+## MODULES ##
+
+# Un módulo en Python es un archivo que contiene definiciones y declaraciones de Python. Los módulos permiten organizar el código en partes reutilizables y mantenerlo limpio y manejable. Se pueden importar módulos utilizando la palabra clave `import`.
+
+import modules.mates  # Importa el módulo 'mates.py' que contiene funciones matemáticas
+import modules.saludos # Importa el modulo 'saludos.py' que contiene funciones de saludos
+
+print(modules.mates.sumar(5, 3))  # Llama a la función sumar del módulo mates
+print(modules.mates.restar(10, 4))  # Llama a la función restar del módulo mates
+print(modules.mates.multiplicar(6, 7))  # Llama a la función multiplicar del módulo mates
+print(modules.mates.dividir(8, 2))  # Llama a la función dividir del módulo mates
+print(modules.mates.dividir(8, 0))  # Llama a la función dividir del módulo mates con división por cero
+
+print(modules.saludos.despedir("Nacho"))
+print(modules.saludos.saludo("Nacho"))
