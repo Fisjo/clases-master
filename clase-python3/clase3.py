@@ -13,3 +13,11 @@ numero2 = float(input("Ingresa otro número decimal: "))
 suma = numero1 + numero2
 print(f"La suma de {numero1} y {numero2} es: {suma}")
 
+## CASTING ##
+
+# El casting es el proceso de convertir un tipo de dato a otro. En Python, se puede realizar casting utilizando funciones como `int()`, `float()`, `str()`, etc.
+
+print(int("123"))  # Convierte la cadena "123" a un entero
+print(float("123.45"))  # Convierte la cadena "123.45" a un número decimal
+print(str(123))  # Convierte el entero 123 a una cadena
+
