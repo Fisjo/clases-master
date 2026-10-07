@@ -27,6 +27,7 @@ Este repositorio es un conjunto de ejercicios prácticos para aprender Python y,
   - control de bucles con `break` y `continue`
   - manejo de errores con `try`, `except` y `finally`
   - módulos propios (`clase-python3/modules/`)
+  - tests básicos con `pytest` (`clase-python3/modules/test_precios.py`)
 
 - `clase-git/`: carpeta creada principalmente como ejercicio de Git. En ella hay varios archivos y scripts sencillos, pero su objetivo real era practicar:
   - ramas
@@ -49,6 +50,7 @@ Este proyecto busca practicar:
 - control de flujo en bucles (`break`, `continue`)
 - gestión de errores con `try` / `except` / `finally`
 - organización del código en módulos
+- escritura de tests automáticos
 - escritura de funciones simples
 - entrada y salida por consola
 - lógica de programación básica
@@ -91,6 +93,13 @@ Para ejecutar la tercera clase de Python (pide datos por consola mediante `input
 ```bash
 cd clase-python3
 python3 clase3.py
+```
+
+Para ejecutar los tests de la clase 3 (requiere `pytest`):
+
+```bash
+cd clase-python3/modules
+pytest
 ```
 
 ## Detalle de la clase 3 (`clase-python3`)
@@ -174,6 +183,8 @@ La carpeta `clase-python3/modules/` contiene:
 
 - `mates.py`: `sumar`, `restar`, `multiplicar` y `dividir` (esta última controla la división por cero con `try`/`except`).
 - `saludos.py`: `saludo(nombre)` y `despedir(nombre)`.
+- `precios.py`: `precio_descuento(precio, descuento)`, que devuelve el precio tras aplicar un descuento (`0.2` = 20 %).
+- `test_precios.py`: tests de `precio_descuento` (ver el apartado 7).
 
 Uso desde `clase3.py`:
 
@@ -187,6 +198,44 @@ print(modules.saludos.saludo("Nacho"))
 ```
 
 Detalle a tener en cuenta: `saludo`, `despedir` y `dividir` (en el caso de división por cero) no devuelven un valor, solo imprimen. Por eso, al envolver la llamada en otro `print(...)`, además del mensaje aparece `None`. Python crea la carpeta `__pycache__` automáticamente al importar módulos; no hace falta tocarla.
+
+### 7. Tests
+
+Un test es una función que comprueba con `assert` que otra función devuelve lo esperado. Si el `assert` falla, el test falla. `pytest` descubre automáticamente los archivos `test_*.py` y las funciones `test_*`.
+
+`precios.py`:
+
+```python
+def precio_descuento(precio, descuento):
+    return precio * (1 - descuento)
+```
+
+`test_precios.py` comprueba:
+
+- descuento del 10 %
+- descuentos habituales (20 %, 30 %, 50 %, 90 %)
+- sin descuento (`0`): devuelve el precio original
+- descuento total (`1`): devuelve `0`
+- precio `0`
+- un precio decimal (`19.99` con 25 % de descuento)
+
+Los floats no se comparan con `==`, porque `100 * (1 - 0.3)` puede dar `70.00000000000001`. Se usa `math.isclose`, que acepta una diferencia mínima:
+
+```python
+from math import isclose
+
+assert isclose(precio_descuento(100, 0.3), 70)
+```
+
+Solo se usa `==` cuando el resultado es exacto, como con `0` o `1`.
+
+Para ejecutarlos:
+
+```bash
+pip install pytest
+cd clase-python3/modules
+pytest
+```
 
 ## Nota importante
 
