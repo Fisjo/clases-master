@@ -80,3 +80,37 @@ for i in numeros:
         break
     if i % 5 == 0: 
         print(i)
+
+
+## TRY and EXCEPT ##
+
+# La estructura `try` y `except` se utiliza para manejar excepciones en Python. Permite ejecutar un bloque de código y capturar errores que puedan ocurrir durante su ejecución, evitando que el programa se detenga abruptamente.
+
+try:
+    resultado = 10 / 0  # Esto generará un error de división por cero
+except ZeroDivisionError:
+    print("Error: No se puede dividir por cero.")
+
+
+try: 
+    numero1 = int(input("Ingresa un número entero: "))
+    numero2 = int(input("Ingresa otro número entero: "))
+    resultado = numero1 / numero2
+    print(f"El resultado de {numero1} dividido por {numero2} es: {resultado}")
+except ValueError:
+    print("Error: Debes ingresar un número entero válido.")
+except ZeroDivisionError:
+    print("Error: No se puede dividir por cero.")
+finally:
+    print("Gracias por usar el programa de división.")
+
+
+contador = 0
+while contador < 5:
+    try:
+        numero = int(input("Ingresa un número entero: "))
+        print(f"Has ingresado el número: {numero}")
+        break  # Sale del bucle si la entrada es válida
+    except ValueError:
+        contador += 1
+        print(f"Error: Debes ingresar un número entero válido. Intentos restantes: {5 - contador}")
