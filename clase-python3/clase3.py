@@ -1,10 +1,33 @@
-## INPUTS ##
+"""
+Clase 3 de Python: inputs, casting, round, break/continue, errores y módulos.
 
-# Un imput es una función que permite al usuario ingresar datos desde la consola. En Python, se utiliza la función `input()` para capturar la entrada del usuario.
+Contenido:
+    1. Inputs
+    2. Casting
+    3. Round
+    4. Break y continue
+        4.1 continue
+        4.2 break
+        4.3 Ejercicios
+    5. Try y except
+        5.1 Captura básica
+        5.2 Varios errores y finally
+        5.3 Reintentar con un bucle
+    6. Módulos
+    7. Tests
+"""
 
+# =============================================================================
+# 1. INPUTS
+# =============================================================================
+
+# Un input es una función que permite al usuario ingresar datos desde la
+# consola. En Python se utiliza `input()`: muestra un mensaje, espera a que el
+# usuario escriba y devuelve lo escrito SIEMPRE como string (`str`).
 nombre = input("Por favor, ingresa tu nombre: ")
 print(f"Hola, {nombre}! Bienvenido/a a la clase de Python.")
 
+# Para trabajar con números hay que convertir el texto (ver sección 2).
 edad = int(input("Por favor, ingresa tu edad: "))
 print(f"Tienes {edad} años.")
 
@@ -13,86 +36,111 @@ numero2 = float(input("Ingresa otro número decimal: "))
 suma = numero1 + numero2
 print(f"La suma de {numero1} y {numero2} es: {suma}")
 
-## CASTING ##
 
-# El casting es el proceso de convertir un tipo de dato a otro. En Python, se puede realizar casting utilizando funciones como `int()`, `float()`, `str()`, etc.
+# =============================================================================
+# 2. CASTING
+# =============================================================================
 
-print(int("123"))  # Convierte la cadena "123" a un entero
-print(float("123.45"))  # Convierte la cadena "123.45" a un número decimal
-print(str(123))  # Convierte el entero 123 a una cadena
+# El casting es el proceso de convertir un tipo de dato a otro. Se realiza con
+# funciones como `int()`, `float()` y `str()`.
+print(int("123"))        # 123     -> convierte el string "123" a entero
+print(float("123.45"))   # 123.45  -> convierte el string "123.45" a decimal
+print(str(123))          # 123     -> convierte el entero 123 a string
 
-## ROUND ##
-
-# La función `round()` se utiliza para redondear un número decimal a un número específico de decimales.
-# Con el 0.5, Python redondea al número par más cercano (redondeo bancario).
-
-print(round(3.14159, 2))  # Redondea 3.14159 a 2 decimales
-print(round(2.71828))  # Redondea 2.71828 al entero más cercano
-print(round(2.5))  # Redondea 2.5 al entero más cercano (redondeo bancario)
-print(round(3.5))  # Redondea 3.5 al entero más cercano (redondeo bancario)
+# Si el valor no se puede convertir (por ejemplo int("hola")), Python lanza un
+# `ValueError`. Se gestiona con try/except (ver sección 5).
 
 
-## BREAK and CONTINUE ##
+# =============================================================================
+# 3. ROUND
+# =============================================================================
 
-# La instrucción `break` se utiliza para salir de un bucle antes de que termine su ejecución normal. Por otro lado, la instrucción `continue` se utiliza para saltar a la siguiente iteración del bucle, omitiendo el resto del código en la iteración actual.
+# `round(numero, decimales)` redondea un número decimal. Si no se indican los
+# decimales, devuelve un entero.
+# Con el .5 exacto, Python redondea al número PAR más cercano (redondeo
+# bancario), no siempre hacia arriba.
+print(round(3.14159, 2))  # 3.14 -> redondea a 2 decimales
+print(round(2.71828))     # 3    -> redondea al entero más cercano
+print(round(2.5))         # 2    -> redondeo bancario (par más cercano)
+print(round(3.5))         # 4    -> redondeo bancario (par más cercano)
 
-numeros = range(1, 100)  # Rango de números del 1 al 99
 
-for numero in numeros:
+# =============================================================================
+# 4. BREAK Y CONTINUE
+# =============================================================================
+
+# `break` sale del bucle antes de que termine su ejecución normal.
+# `continue` salta a la siguiente iteración, omitiendo el resto del código de
+# la iteración actual.
+
+# --- 4.1 continue ---
+
+# Salta los pares e imprime el cuadrado de los impares.
+for numero in range(1, 100):  # números del 1 al 99
     if numero % 2 == 0:
         print(f"{numero} es un número par, se saltará esta iteración.")
-        continue  # Salta los números pares
+        continue
     print(f"{numero} es un número impar, su cuadrado es {numero ** 2}.")
 print("Fin del bucle.")
 
+# --- 4.2 break ---
 
+# Recorre la lista y se detiene al encontrar una edad de 65 o más.
+lista_edades = [15, 22, 17, 30, 65, 45, 70, 19]
 
-numeros2 = range(1, 100)  # Rango de números del 1 al 99
-print("Objetivo: encontrar el ultimo numero primo menor a 100")
-for numero in numeros2:
+for edad in lista_edades:
+    if edad < 18:
+        continue  # salta las edades menores de 18
+    if edad >= 65:
+        print(f"{edad} es mayor de 65, se detendrá el bucle.")
+        break  # sale del bucle
+    print(f"{edad} es una edad válida para el bucle.")
+
+# --- 4.3 Ejercicios ---
+
+# Encontrar el último número primo menor que 100.
+# Un número es primo si no tiene divisores entre 2 y su raíz cuadrada.
+print("Objetivo: encontrar el último número primo menor a 100")
+for numero in range(1, 100):
     if numero < 2:
-        continue  # Salta los números menores a 2, ya que no son primos
+        continue  # los números menores que 2 no son primos
     es_primo = True
     for i in range(2, int(numero ** 0.5) + 1):
         if numero % i == 0:
             es_primo = False
-            break  # Sale del bucle si encuentra un divisor
+            break  # sale del bucle interno en cuanto encuentra un divisor
     if es_primo:
         ultimo_primo = numero
-print(f"El último número primo menor a 100 es: {ultimo_primo}")
+print(f"El último número primo menor a 100 es: {ultimo_primo}")  # 97
 
-
-lista_edades = [15, 22, 17, 30, 65, 45, 70, 19]
-
-for edad in lista_edades:
-    if edad < 18: 
-        continue  # Salta las edades menores a 18
-    if edad >= 65:
-        print(f"{edad} es mayor de 65, se detendrá el bucle.")
-        break  # Sale del bucle si encuentra una edad mayor a 65
-    print(f"{edad} es una edad válida para el bucle.")
-
-
+# Imprimir los múltiplos de 5 y parar cuando un número supere 150.
 numeros = [12, 15, 32, 42, 55, 75, 122, 132, 150, 180, 200]
 
-for i in numeros: 
-    if i > 150: 
+for numero in numeros:
+    if numero > 150:
         break
-    if i % 5 == 0: 
-        print(i)
+    if numero % 5 == 0:
+        print(numero)  # Salida: 15, 55, 75, 150
 
 
-## TRY and EXCEPT ##
+# =============================================================================
+# 5. TRY Y EXCEPT
+# =============================================================================
 
-# La estructura `try` y `except` se utiliza para manejar excepciones en Python. Permite ejecutar un bloque de código y capturar errores que puedan ocurrir durante su ejecución, evitando que el programa se detenga abruptamente.
+# La estructura `try` / `except` permite manejar excepciones: se ejecuta un
+# bloque de código y, si ocurre un error, se captura para que el programa no se
+# detenga de golpe.
 
+# --- 5.1 Captura básica ---
 try:
-    resultado = 10 / 0  # Esto generará un error de división por cero
+    resultado = 10 / 0  # genera un error de división por cero
 except ZeroDivisionError:
     print("Error: No se puede dividir por cero.")
 
-
-try: 
+# --- 5.2 Varios errores y finally ---
+# Se pueden encadenar varios `except`, uno por cada tipo de error.
+# El bloque `finally` se ejecuta SIEMPRE, haya error o no.
+try:
     numero1 = int(input("Ingresa un número entero: "))
     numero2 = int(input("Ingresa otro número entero: "))
     resultado = numero1 / numero2
@@ -104,29 +152,57 @@ except ZeroDivisionError:
 finally:
     print("Gracias por usar el programa de división.")
 
-
+# --- 5.3 Reintentar con un bucle ---
+# Pide un entero hasta 5 veces: cada fallo suma un intento y, si la entrada es
+# válida, `break` sale del bucle.
 contador = 0
 while contador < 5:
     try:
         numero = int(input("Ingresa un número entero: "))
         print(f"Has ingresado el número: {numero}")
-        break  # Sale del bucle si la entrada es válida
+        break  # sale del bucle si la entrada es válida
     except ValueError:
         contador += 1
         print(f"Error: Debes ingresar un número entero válido. Intentos restantes: {5 - contador}")
 
-## MODULES ##
 
-# Un módulo en Python es un archivo que contiene definiciones y declaraciones de Python. Los módulos permiten organizar el código en partes reutilizables y mantenerlo limpio y manejable. Se pueden importar módulos utilizando la palabra clave `import`.
+# =============================================================================
+# 6. MÓDULOS
+# =============================================================================
 
-import modules.mates  # Importa el módulo 'mates.py' que contiene funciones matemáticas
-import modules.saludos # Importa el modulo 'saludos.py' que contiene funciones de saludos
+# Un módulo es un archivo `.py` que contiene definiciones y declaraciones de
+# Python. Los módulos permiten organizar el código en partes reutilizables y
+# mantenerlo limpio. Se importan con la palabra clave `import`.
+#
+# Los módulos de esta clase están en la carpeta `modules/`:
+#   - mates.py:   sumar, restar, multiplicar y dividir
+#   - saludos.py: saludo y despedir
+import modules.mates
+import modules.saludos
 
-print(modules.mates.sumar(5, 3))  # Llama a la función sumar del módulo mates
-print(modules.mates.restar(10, 4))  # Llama a la función restar del módulo mates
-print(modules.mates.multiplicar(6, 7))  # Llama a la función multiplicar del módulo mates
-print(modules.mates.dividir(8, 2))  # Llama a la función dividir del módulo mates
-print(modules.mates.dividir(8, 0))  # Llama a la función dividir del módulo mates con división por cero
+print(modules.mates.sumar(5, 3))        # 8
+print(modules.mates.restar(10, 4))      # 6
+print(modules.mates.multiplicar(6, 7))  # 42
+print(modules.mates.dividir(8, 2))      # 4.0
+print(modules.mates.dividir(8, 0))      # muestra el error y luego None
 
-print(modules.saludos.despedir("Nacho"))
-print(modules.saludos.saludo("Nacho"))
+# `saludo` y `despedir` imprimen el mensaje y no devuelven nada, por eso al
+# envolverlas en `print()` aparece además `None`.
+print(modules.saludos.despedir("Nacho"))  # Adios Nacho / None
+print(modules.saludos.saludo("Nacho"))    # Hola Nacho! / None
+
+
+# =============================================================================
+# 7. TESTS
+# =============================================================================
+
+# Un test es una función que comprueba con `assert` que otra función devuelve
+# lo esperado. Si el `assert` falla, el test falla.
+#
+# En `modules/precios.py` está la función `precio_descuento(precio, descuento)`
+# y en `modules/test_precios.py` sus tests. Los floats no se comparan con `==`
+# (100 * (1 - 0.3) puede dar 70.00000000000001), se usa `math.isclose`.
+#
+# Para ejecutarlos (requiere `pip install pytest`):
+#     cd clase-python3/modules
+#     pytest
