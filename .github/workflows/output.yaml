@@ -1,0 +1,11 @@
+jobs: 
+  say_hello: 
+    name: "Let's greet the user!"
+    runs-on: ubuntu-latest
+    steps:
+      - id: get-time
+        name: "Get the current time"
+        run: |
+          currTime=$(date)
+          echo "currentTime=${currTime}" >> $GITHUB_OUTPUT
+      - run: echo "The time for the early step is ${{ steps.get-time.outputs.currentTime }}"
