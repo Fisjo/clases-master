@@ -1,0 +1,27 @@
+name: Ejercicio 9
+on:
+  workflow_dispatch:
+jobs:
+  postgres:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:16
+        env:
+          POSTGRES_USER: usuario
+          POSTGRES_PASSWORD: secreto
+          POSTGRES_DB: prueba
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U usuario -d prueba"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - name: Instalar cliente de Postgres
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Verificar conexión
+        env:
+          PGPASSWORD: secreto
+        run: psql -h localhost -p 5432 -U usuario -d prueba -c "SELECT version();"

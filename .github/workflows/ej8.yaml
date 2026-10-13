@@ -1,0 +1,13 @@
+name: Ejercicio 8
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 9 * * 1"
+jobs:
+  tarea-semanal:
+    # Desactivado por defecto: solo corre si la variable del repo ACTIVO vale "true"
+    if: ${{ vars.ACTIVO == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tarea de los lunes
+        run: echo "Ejecución programada del lunes a las 9:00 (UTC)"
