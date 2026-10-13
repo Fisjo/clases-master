@@ -3,13 +3,13 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - data.json
+      - .github/workflows/data/data.json
 jobs:
   validar-json:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validar data.json
+      - name: Validar .github/workflows/data/data.json
         uses: GrantBirki/json-yaml-validate@v3
         with:
-          files: data.json
+          files: .github/workflows/data/data.json

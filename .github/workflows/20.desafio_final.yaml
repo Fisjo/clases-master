@@ -14,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validar que ventas.json es JSON válido
-        run: python3 -m json.tool ventas.json > /dev/null && echo "ventas.json es válido"
+      - name: Validar que .github/workflows/data/ventas.json es JSON válido
+        run: python3 -m json.tool .github/workflows/data/ventas.json > /dev/null && echo ".github/workflows/data/ventas.json es válido"
       - name: Escaneo de seguridad (claves API expuestas)
         if: ${{ inputs.tests_seguridad == 'si' }}
-        run: python3 scripts/escaneo_seguridad.py ventas.json
+        run: python3 clase-github-actions/escaneo_seguridad.py .github/workflows/data/ventas.json
 
   procesamiento:
     runs-on: ubuntu-latest
@@ -33,7 +33,7 @@ jobs:
           {
             echo "Reporte de ventas - entorno: ${{ matrix.entorno }}"
             echo "Fecha: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
-            echo "Registros procesados: $(python3 -c "import json; print(len(json.load(open('ventas.json'))['ventas']))")"
+            echo "Registros procesados: $(python3 -c "import json; print(len(json.load(open('.github/workflows/data/ventas.json'))['ventas']))")"
           } > reporte-${{ matrix.entorno }}.txt
           cat reporte-${{ matrix.entorno }}.txt
       - name: Subir reporte como artefacto
