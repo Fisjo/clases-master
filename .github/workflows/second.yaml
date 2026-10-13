@@ -9,6 +9,6 @@ jobs:
     steps:
       - run: echo "Hello world!"
       - uses: actions/checkout@v3
-      - run: cat ./.github/workflows/list.txt
+      - run: cat ./.github/workflows/data/list.txt
         name: display content of list.txt
       - run: echo "I'm step 4"
