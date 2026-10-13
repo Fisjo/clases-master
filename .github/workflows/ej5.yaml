@@ -1,0 +1,13 @@
+name: Ejercicio 5
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - "docs/**"
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirmar activación
+        run: echo "Push en develop con cambios en docs/"

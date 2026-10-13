@@ -1,0 +1,16 @@
+name: Ejercicio 1
+on:
+  workflow_dispatch:
+env:
+  nombre: Nacho
+jobs:
+  saludo-1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mostrar nombre
+        run: echo "Hola $nombre desde el job 1"
+  saludo-2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mostrar nombre
+        run: echo "Hola $nombre desde el job 2"

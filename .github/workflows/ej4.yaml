@@ -1,0 +1,24 @@
+name: Ejercicio 4
+on:
+  workflow_dispatch:
+jobs:
+  generar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Crear archivo con mensaje
+        run: echo "Hola desde el job 1" > mensaje.txt
+      - name: Subir artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: mensaje
+          path: mensaje.txt
+  mostrar:
+    runs-on: ubuntu-latest
+    needs: generar
+    steps:
+      - name: Descargar artefacto
+        uses: actions/download-artifact@v4
+        with:
+          name: mensaje
+      - name: Mostrar contenido
+        run: cat mensaje.txt

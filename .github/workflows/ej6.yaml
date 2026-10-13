@@ -1,0 +1,15 @@
+name: Ejercicio 6
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - data.json
+jobs:
+  validar-json:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validar data.json
+        uses: GrantBirki/json-yaml-validate@v3
+        with:
+          files: data.json
