@@ -1,0 +1,7 @@
+{
+  "ventas": [
+    { "id": 1, "producto": "Teclado", "cantidad": 3, "precio": 25.5 },
+    { "id": 2, "producto": "Ratón", "cantidad": 5, "precio": 12.0 },
+    { "id": 3, "producto": "Monitor", "cantidad": 2, "precio": 180.0 }
+  ]
+}
