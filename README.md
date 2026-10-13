@@ -37,6 +37,21 @@ Este repositorio es un conjunto de ejercicios prácticos para aprender Python y,
   - resolución de conflictos
   - flujo de trabajo colaborativo
 
+- `clase-github-actions/`: cuarta clase, dedicada a GitHub Actions. Contiene los apuntes (`info-clase.md`) y un script de ejemplo (`escaneo_seguridad.py`). Los workflows están en `.github/workflows/` (GitHub solo detecta los que están directamente en esa carpeta) y sus archivos de datos JSON en `.github/workflows/data/`. Se trabajan:
+  - estructura de un workflow (`on`, `jobs`, `runs-on`, `steps`)
+  - triggers manuales con `workflow_dispatch` e `inputs`
+  - uso de acciones (`uses`) como `actions/checkout`
+  - variables de entorno (`env`), secretos (`secrets`) y variables del repo (`vars`)
+  - matrices de estrategia (`strategy.matrix`)
+  - dependencias entre jobs (`needs`) y condicionales (`if`)
+  - outputs entre steps y entre jobs (`$GITHUB_OUTPUT`)
+  - artefactos (`upload-artifact` / `download-artifact`)
+  - filtros de rama y ruta en `push`
+  - programación con `cron`
+  - contenedores de servicio (Postgres)
+  - validación de JSON con una acción de la comunidad
+  - un desafío final (`20.desafio_final.yaml`) que integra todo lo anterior
+
 ## Objetivos de aprendizaje
 
 Este proyecto busca practicar:
@@ -55,6 +70,7 @@ Este proyecto busca practicar:
 - entrada y salida por consola
 - lógica de programación básica
 - trabajo con Git y GitHub en equipo
+- automatización con GitHub Actions: workflows, jobs, matrices, artefactos, outputs, secretos y servicios
 
 ## Requisitos
 
@@ -94,6 +110,14 @@ Para ejecutar la tercera clase de Python:
 cd clase-python3
 python3 clase3.py
 ```
+
+Para la clase de GitHub Actions, los workflows se lanzan desde la pestaña **Actions** del repositorio (**Run workflow**). El script de ejemplo se puede probar en local:
+
+```bash
+python3 clase-github-actions/escaneo_seguridad.py .github/workflows/data/ventas.json
+```
+
+Para el desafío final hay que crear antes el secreto `DISCORD_WEBHOOK` en Settings → Secrets and variables → Actions.
 
 ## Nota importante
 
