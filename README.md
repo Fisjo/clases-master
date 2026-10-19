@@ -4,7 +4,7 @@ Este repositorio es un conjunto de ejercicios prácticos para aprender Python y,
 
 ## Estructura del repositorio
 
-- `clase-python1/holamundo.py`: archivo principal de práctica de Python. Aquí se trabajan conceptos básicos como:
+- `python/clase-python1/clase1.py`: archivo principal de práctica de Python. Aquí se trabajan conceptos básicos como:
   - variables
   - cadenas de texto
   - listas y diccionarios
@@ -13,23 +13,22 @@ Este repositorio es un conjunto de ejercicios prácticos para aprender Python y,
   - condicionales
   - comparaciones y asignaciones
 
-- `clase-python2/class.py`: segunda clase de Python. Se trabajan:
+- `python/clase-python2/clase2.py`: segunda clase de Python. Se trabajan:
   - sets
   - repaso de diccionarios y condicionales
   - bucles (`for` y `while`)
   - funciones (básicas, docstrings, parámetros por defecto)
   - funciones lambda
 
-- `clase-python3/clase3.py`: tercera clase de Python. Se trabajan:
+- `python/clase-python3/clase3.py`: tercera clase de Python. Se trabajan:
   - entrada de datos con `input()`
   - casting (conversión de tipos)
   - redondeo con `round()`
   - control de bucles con `break` y `continue`
   - manejo de errores con `try`, `except` y `finally`
-  - módulos propios (`clase-python3/modules/`)
-  - tests básicos con `pytest` (`clase-python3/modules/test_precios.py`)
+  - módulos propios (`python/clase-python3/modules/`: `mates.py` y `saludos.py`)
 
-- `clase-git/`: carpeta creada principalmente como ejercicio de Git. En ella hay varios archivos y scripts sencillos, pero su objetivo real era practicar:
+- `git/clase-git/`: carpeta creada principalmente como ejercicio de Git. En ella hay varios archivos y scripts sencillos, pero su objetivo real era practicar:
   - ramas
   - commits
   - merges
@@ -37,7 +36,7 @@ Este repositorio es un conjunto de ejercicios prácticos para aprender Python y,
   - resolución de conflictos
   - flujo de trabajo colaborativo
 
-- `clase-github-actions/`: cuarta clase, dedicada a GitHub Actions. Contiene los apuntes (`info-clase.md`) y un script de ejemplo (`escaneo_seguridad.py`). Los workflows están en `.github/workflows/` (GitHub solo detecta los que están directamente en esa carpeta) y sus archivos de datos JSON en `.github/workflows/data/`. Se trabajan:
+- `git/clase-github-actions/`: cuarta clase, dedicada a GitHub Actions. Contiene los apuntes (`info-clase.md`) y un script de ejemplo (`escaneo_seguridad.py`). Los workflows están en `.github/workflows/` (GitHub solo detecta los que están directamente en esa carpeta) y sus archivos de datos JSON en `.github/workflows/data/`. Se trabajan:
   - estructura de un workflow (`on`, `jobs`, `runs-on`, `steps`)
   - triggers manuales con `workflow_dispatch` e `inputs`
   - uso de acciones (`uses`) como `actions/checkout`
@@ -51,6 +50,17 @@ Este repositorio es un conjunto de ejercicios prácticos para aprender Python y,
   - contenedores de servicio (Postgres)
   - validación de JSON con una acción de la comunidad
   - un desafío final (`20.desafio_final.yaml`) que integra todo lo anterior
+
+- `docker/`: clases de Docker, cada una con un `README.md` que explica la presentación correspondiente:
+  - [`clase-docker1`](docker/clase-docker1/README.md): kernel, máquinas virtuales, contenedores, Dockerfile, imágenes y primeros comandos.
+  - [`clase-docker2`](docker/clase-docker2/README.md): `requirements.txt`, bind mounts, `ENTRYPOINT`/`CMD`, entorno Linux, puertos con Nginx e inspección de errores. Incluye `precios.py` y `test_precios.py`, que se ejecutan con el `Dockerfile` y el `requirements.txt` de la raíz del repositorio.
+  - [`clase-docker3`](docker/clase-docker3/README.md): Docker Compose, volúmenes y PostgreSQL + pgAdmin.
+
+- `sql/`: clases de SQL.
+  - [`clase-sql1`](sql/clase-sql1/README.md): `CREATE TABLE`, `ALTER TABLE`, `INSERT` y `SELECT` sobre la tabla `peliculas`.
+  - `clase-sql2`: carpeta aún vacía.
+
+- `Dockerfile` y `requirements.txt` (raíz): imagen para ejecutar los tests de `docker/clase-docker2` con `pytest` y `hypothesis`.
 
 ## Objetivos de aprendizaje
 
@@ -78,13 +88,14 @@ Necesitas tener instalado:
 
 - Python 3
 - Git
+- Docker (para las clases de `docker/` y `sql/`)
 
 ## Cómo ejecutarlo
 
 Para ejecutar los scripts de la carpeta de Git:
 
 ```bash
-cd clase-git
+cd git/clase-git
 python3 app.py
 python3 interes-compuesto.py
 python3 numeros-aleatorios.py
@@ -93,35 +104,42 @@ python3 numeros-aleatorios.py
 Para ejecutar el ejemplo introductorio de Python:
 
 ```bash
-cd clase-python1
-python3 holamundo.py
+cd python/clase-python1
+python3 clase1.py
 ```
 
 Para ejecutar la segunda clase de Python:
 
 ```bash
-cd clase-python2
-python3 class.py
+cd python/clase-python2
+python3 clase2.py
 ```
 
 Para ejecutar la tercera clase de Python:
 
 ```bash
-cd clase-python3
+cd python/clase-python3
 python3 clase3.py
+```
+
+Para los tests de la clase Docker 2 (desde la raíz del repositorio):
+
+```bash
+docker build -t mis-tests .
+docker run --rm mis-tests
 ```
 
 Para la clase de GitHub Actions, los workflows se lanzan desde la pestaña **Actions** del repositorio (**Run workflow**). El script de ejemplo se puede probar en local:
 
 ```bash
-python3 clase-github-actions/escaneo_seguridad.py .github/workflows/data/ventas.json
+python3 git/clase-github-actions/escaneo_seguridad.py .github/workflows/data/ventas.json
 ```
 
 Para el desafío final hay que crear antes el secreto `DISCORD_WEBHOOK` en Settings → Secrets and variables → Actions.
 
 ## Nota importante
 
-La carpeta `clase-git` no es un proyecto funcional complejo ni un producto final. Fue principalmente una práctica para aprender a trabajar con Git, ramas, merges y pull requests. La parte más importante de ese ejercicio era el proceso de colaboración y manejo del repositorio, no la lógica del programa en sí.
+La carpeta `git/clase-git` no es un proyecto funcional complejo ni un producto final. Fue principalmente una práctica para aprender a trabajar con Git, ramas, merges y pull requests. La parte más importante de ese ejercicio era el proceso de colaboración y manejo del repositorio, no la lógica del programa en sí.
 
 ## Estado del proyecto
 

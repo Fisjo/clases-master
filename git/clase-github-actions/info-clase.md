@@ -52,7 +52,7 @@ Define un job (`say_hello`) que se ejecuta en una máquina Ubuntu y hace un `ech
 - **Steps:**
   1. `echo "Hello world!"`.
   2. `actions/checkout@v3` descarga el código del repo en el runner. Es una *action* reutilizable y se usa con `uses:` en lugar de `run:`.
-  3. `cat ./.github/workflows/list.txt` muestra el contenido de `list.txt`. Solo funciona porque el step anterior hizo el checkout.
+  3. `cat ./.github/workflows/data/list.txt` muestra el contenido de `list.txt`. Solo funciona porque el step anterior hizo el checkout.
   4. `echo "I'm step 4"`.
 
 **Idea clave:** el runner empieza vacío. Sin `checkout`, no hay archivos del repo.

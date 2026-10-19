@@ -11,7 +11,7 @@ Explicación organizada de la presentación **Docker 2** (Máster en Desarrollo 
 | `info-clase.md` | Apuntes sueltos de clase (Dockerfile, `docker build -t prueba .`, `docker run --rm --name -v`) |
 | `README.md` | Esta guía |
 
-El `Dockerfile` y el `requirements.txt` (`pytest`, `hypothesis`) están en la **raíz del repositorio** y construyen esta práctica:
+El `Dockerfile` y el `requirements.txt` (`pytest`, `hypothesis`) están en la **raíz del repositorio** (no en esta carpeta) y construyen esta práctica. Los comandos se lanzan **desde la raíz**, porque el contexto del build (`.`) es la raíz y `pytest` descubre los tests en `docker/clase-docker2/`:
 
 ```bash
 docker build -t mis-tests .

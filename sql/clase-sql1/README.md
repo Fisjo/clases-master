@@ -1,6 +1,6 @@
 # Clase SQL 1 · Crear y modificar tablas, insertar y consultar datos
 
-En esta clase se usa el entorno **PostgreSQL + pgAdmin** que se dejó preparado con Docker Compose (ver [clase-docker3](../clase-docker3/README.md)). Se trabaja sobre una única tabla, `peliculas`, y se recorre el ciclo básico de SQL:
+En esta clase se usa el entorno **PostgreSQL + pgAdmin** que se dejó preparado con Docker Compose (ver [clase-docker3](../../docker/clase-docker3/README.md)). Se trabaja sobre una única tabla, `peliculas`, y se recorre el ciclo básico de SQL:
 
 1. **Crear** una tabla (`CREATE TABLE`).
 2. **Modificarla** (`ALTER TABLE`: añadir, renombrar, borrar columnas y cambiar tipos).
