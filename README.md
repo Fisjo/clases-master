@@ -57,7 +57,7 @@ Este repositorio es un conjunto de ejercicios prácticos para aprender Python y,
   - [`clase-docker3`](docker/clase-docker3/README.md): Docker Compose, volúmenes y PostgreSQL + pgAdmin.
 
 - `sql/`: clases de SQL.
-  - [`clase-sql1`](sql/clase-sql1/README.md): `CREATE TABLE`, `ALTER TABLE`, `INSERT` y `SELECT` sobre la tabla `peliculas`.
+  - [`clase-sql1`](sql/clase-sql1/README.md): `CREATE TABLE`, `ALTER TABLE`, `INSERT`, `SELECT` con `WHERE`, `ORDER BY`, `LIMIT`, funciones, `GROUP BY`/`HAVING`, `UPDATE` y `DELETE` sobre la tabla `peliculas`.
   - `clase-sql2`: carpeta aún vacía.
 
 - `Dockerfile` y `requirements.txt` (raíz): imagen para ejecutar los tests de `docker/clase-docker2` con `pytest` y `hypothesis`.
