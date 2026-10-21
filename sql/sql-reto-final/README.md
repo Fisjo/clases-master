@@ -137,6 +137,141 @@ app-1  | (2, 'Hollow Knight', 'PC', 2017)
 app-1  | (3, 'God of War', 'PS4', 2018)
 ```
 
+## Explicación de los archivos del proyecto
+
+En esta carpeta se guardan [`consultas.sql`](consultas.sql), [`.env.example`](.env.example), [`main.py`](main.py), [`requirements.txt`](requirements.txt), [`.dockerignore`](.dockerignore) y [`.gitignore`](.gitignore). `docker-compose.yml` y `Dockerfile` se explican aquí pero **no se incluyen como archivos**, para que esta carpeta no sea por sí sola desplegable ni choque con el `Dockerfile` de la raíz del repositorio. El `.env` real tampoco se sube (contiene credenciales).
+
+### `docker-compose.yml`
+
+```yaml
+services:
+  db:
+    image: postgres:17-alpine
+    env_file: .env
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgresDB:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  app:
+    build: .
+    env_file: .env
+    depends_on:
+      - db
+
+volumes:
+  postgresDB:
+```
+
+Define **dos servicios** que Compose conecta en una misma red, donde cada uno es alcanzable por el nombre de su servicio:
+
+| Línea | Qué hace |
+|---|---|
+| `image: postgres:17-alpine` | `db` usa la imagen oficial de PostgreSQL 17 sobre Alpine (ligera) |
+| `env_file: .env` | Carga las variables del `.env` como entorno del contenedor. En `db`, la imagen usa `POSTGRES_USER`, `POSTGRES_PASSWORD` y `POSTGRES_DB` para crear el usuario y la base la primera vez |
+| `ports: "5433:5432"` | Publica el puerto 5432 del contenedor como **5433** en tu ordenador (formato `host:contenedor`). Se usa 5433 para no chocar con un PostgreSQL local en el 5432. Es lo que usa VS Code |
+| `volumes: postgresDB:/var/lib/postgresql/data` | Volumen con nombre donde PostgreSQL guarda los datos: sobreviven a `docker compose down` y solo se borran con `down -v` |
+| `restart: unless-stopped` | Reinicia `db` si se cae o si arranca Docker, salvo que se haya parado a mano |
+| `build: .` | `app` no usa una imagen publicada: se construye con el `Dockerfile` de esta carpeta |
+| `depends_on: - db` | Arranca `db` antes que `app` (pero no espera a que PostgreSQL esté listo para aceptar conexiones) |
+| `volumes: postgresDB:` (final) | Declara el volumen con nombre usado arriba |
+
+`app` **no publica puertos**: solo se conecta hacia fuera, a `db:5432`, por la red interna.
+
+### `Dockerfile`
+
+```dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["python", "main.py"]
+```
+
+| Instrucción | Qué hace |
+|---|---|
+| `FROM python:3.11-slim` | Imagen base: Python 3.11 en su variante reducida |
+| `WORKDIR /app` | Directorio de trabajo dentro del contenedor |
+| `COPY requirements.txt .` + `RUN pip install ...` | Copia e instala **solo las dependencias primero**: así Docker reutiliza esa capa en caché mientras `requirements.txt` no cambie |
+| `COPY . .` | Copia el resto del código (aquí entra `main.py`). Por eso importa el `.dockerignore`: sin él también se copiaría el `.env` a la imagen |
+| `CMD ["python", "main.py"]` | Comando que se ejecuta al arrancar el contenedor |
+
+### `requirements.txt`
+
+```
+psycopg[binary]==3.1.18
+```
+
+- Lista las dependencias de Python que instala `pip install -r requirements.txt` en el `Dockerfile`.
+- `psycopg` es el driver (versión 3) para hablar con PostgreSQL desde Python. El extra `[binary]` instala una versión precompilada, de modo que no hacen falta compiladores ni librerías de sistema (`libpq`) en la imagen `slim`.
+- `==3.1.18` fija la versión exacta, para que la imagen se construya siempre igual.
+
+### `.dockerignore`
+
+```
+.env
+.git
+__pycache__/
+```
+
+Indica qué **no** entra en la imagen cuando el `Dockerfile` ejecuta `COPY . .`:
+
+- `.env`: evita que las credenciales queden **dentro de la imagen** (donde cualquiera con la imagen podría leerlas). La app las recibe en ejecución por `env_file` en `docker-compose.yml`, no desde la imagen.
+- `.git`: el historial de Git no aporta nada al contenedor y lo haría más pesado.
+- `__pycache__/`: bytecode de Python generado en local, innecesario.
+
+### `.gitignore`
+
+```
+.env
+__pycache__/
+```
+
+Indica qué **no** se sube a Git: `.env` (credenciales) y `__pycache__/` (archivos generados). Es el equivalente del `.dockerignore`, pero para el repositorio en vez de para la imagen: por eso se versiona `.env.example` y no `.env`. `.git` no aparece aquí porque Git ya ignora su propia carpeta.
+
+### `.env` y `.env.example`
+
+Archivo real (local, **no se sube a GitHub**):
+
+```
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=pruebadb
+DATABASE_URL=postgresql://postgres:postgres@db:5432/pruebadb
+```
+
+- Las tres primeras variables las lee la imagen de PostgreSQL para inicializarse.
+- `DATABASE_URL` la lee `main.py`. Formato: `postgresql://usuario:contraseña@host:puerto/base`. El host es **`db`** (nombre del servicio) y el puerto el **interno `5432`**.
+- `env_file` aplica el mismo `.env` a los dos servicios, así que `app` también recibe `POSTGRES_PASSWORD`, aunque solo use `DATABASE_URL`.
+- La contraseña `postgres` vale para pruebas locales; en cualquier otro entorno debe cambiarse. [`.env.example`](.env.example) es la plantilla versionable: misma estructura, con `cambia_esta_contrasena` como marcador. La contraseña debe coincidir en `POSTGRES_PASSWORD` y `DATABASE_URL`.
+
+### `consultas.sql`
+
+Ver [`consultas.sql`](consultas.sql):
+
+- `CREATE TABLE IF NOT EXISTS videojuegos`: crea la tabla si no existe. `id SERIAL PRIMARY KEY` es un entero autoincremental y clave primaria; `titulo` es obligatorio (`NOT NULL`); `plataforma` y `anio` admiten `NULL`.
+- `INSERT INTO ... VALUES`: añade tres videojuegos (los ids 1, 2 y 3 los genera `SERIAL`).
+- `SELECT * FROM videojuegos;`: muestra el resultado.
+- **No es idempotente**: el `CREATE` tiene `IF NOT EXISTS`, pero el `INSERT` no. Ejecutarlo dos veces duplica los tres registros (con ids 4, 5 y 6). Para empezar de cero, `DROP TABLE videojuegos;` o `docker compose down -v`.
+- PostgreSQL **no lo ejecuta solo**: hay que lanzarlo a mano (extensión de VS Code o `psql`, ver Fase 1).
+
+### Cómo encajan las piezas
+
+```
+ tu ordenador                          red de Docker Compose
+┌──────────────────────┐        ┌──────────────────────────────────┐
+│ VS Code / psql       │ 5433 → │ db (postgres:17-alpine) :5432    │
+└──────────────────────┘        │        ▲                         │
+                                │        │ DATABASE_URL (db:5432)  │
+                                │ app (python:3.11-slim)           │
+                                │   └─ main.py → SELECT            │
+                                └──────────────────────────────────┘
+```
+
+Orden de uso: `docker compose up -d db` → ejecutar `consultas.sql` → `docker compose up --build app` → `main.py` lee la tabla y la imprime.
+
 ## Comandos útiles
 
 ```bash
