@@ -7,8 +7,9 @@ Proyecto en dos fases: una base de datos PostgreSQL levantada con Docker Compose
 ```
 .
 ├── README.md
-├── docker-compose.yml   # servicios db (PostgreSQL) y app (Python)
-├── Dockerfile           # imagen de la aplicación Python
+├── docker-compose.yml   # servicios db (PostgreSQL) y app (Python)   [solo local, explicado abajo]
+├── Dockerfile           # imagen de la aplicación Python            [solo local, explicado abajo]
+├── .env                 # credenciales reales                        [solo local, no se sube]
 ├── .dockerignore        # evita copiar .env y .git a la imagen
 ├── .gitignore           # evita subir .env a GitHub
 ├── .env.example         # plantilla de variables de entorno
@@ -16,6 +17,8 @@ Proyecto en dos fases: una base de datos PostgreSQL levantada con Docker Compose
 ├── main.py              # conecta a la BD y hace el SELECT
 └── consultas.sql        # CREATE TABLE, INSERT y SELECT
 ```
+
+> En el repositorio solo están los archivos sin marca `[solo local…]`. `docker-compose.yml` y `Dockerfile` se explican en [Explicación de los archivos del proyecto](#explicación-de-los-archivos-del-proyecto) pero no se incluyen, así que **los comandos `docker compose` de este README solo funcionan en el proyecto local completo**, no clonando esta carpeta tal cual.
 
 ## Configuración
 

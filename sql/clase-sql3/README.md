@@ -7,6 +7,8 @@ Esta clase es la práctica de repaso de [SQL 2](../clase-sql2/README.md), recogi
 3. Comparar `INNER`, `LEFT`, `RIGHT` y `FULL OUTER JOIN`.
 4. Usar **subconsultas** en el `WHERE`.
 
+Después de esta clase, el [reto final](../sql-reto-final/README.md) lleva SQL a una aplicación: PostgreSQL y Python con Docker Compose.
+
 ## Índice
 
 1. [Modelo de datos](#1-modelo-de-datos)
