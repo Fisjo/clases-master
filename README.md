@@ -1,6 +1,6 @@
 # Repositorio de clases de Máster de IA, Data & Cloud @ EDEM Escuela de Empresarios
 
-Este repositorio es un conjunto de ejercicios prácticos para aprender Python y, además, una pequeña práctica de trabajo con Git. No se trata de un proyecto de producción, sino de un espacio para probar conceptos básicos de programación, manipular variables, escribir funciones y familiarizarse con el flujo de trabajo de control de versiones.
+Este repositorio reúne los ejercicios y apuntes de las clases del máster: Python, Git y GitHub Actions, Docker y SQL con PostgreSQL, además de un reto final que integra SQL, Python y Docker. No se trata de un proyecto de producción, sino de un espacio para practicar y documentar cada clase (casi todas tienen su propio `README.md`).
 
 ## Estructura del repositorio
 
@@ -59,6 +59,8 @@ Este repositorio es un conjunto de ejercicios prácticos para aprender Python y,
 - `sql/`: clases de SQL.
   - [`clase-sql1`](sql/clase-sql1/README.md): `CREATE TABLE`, `ALTER TABLE`, `INSERT`, `SELECT` con `WHERE`, `ORDER BY`, `LIMIT`, funciones, `GROUP BY`/`HAVING`, `UPDATE` y `DELETE` sobre la tabla `peliculas`.
   - [`clase-sql2`](sql/clase-sql2/README.md): relaciones entre tablas (primary key, foreign key; 1:1, 1:N y N:M), diseño y diagramas con dbdiagram.io, `REFERENCES` y `INNER`/`LEFT`/`RIGHT`/`FULL OUTER JOIN` con `IS NULL`, varias tablas y `GROUP BY`.
+  - [`clase-sql3`](sql/clase-sql3/README.md): entregable (`Entregable.sql`) sobre `departamentos`, `empleados` y `proyectos`: tablas relacionadas, comparación de `INNER`/`LEFT`/`RIGHT`/`FULL OUTER JOIN` y subconsultas en el `WHERE` (`AVG`, `MAX`, búsqueda de un `id`).
+  - [`sql-reto-final`](sql/sql-reto-final/README.md): reto final. PostgreSQL y una aplicación Python (`main.py`, con `psycopg`) en contenedores con Docker Compose; consulta la tabla `videojuegos` y la imprime. Incluye `consultas.sql`, `requirements.txt`, `.env.example`, `.dockerignore` y `.gitignore`; el `Dockerfile` y el `docker-compose.yml` solo se explican en su README, no están en el repositorio.
 
 - `Dockerfile` y `requirements.txt` (raíz): imagen para ejecutar los tests de `docker/clase-docker2` con `pytest` y `hypothesis`.
 
@@ -81,7 +83,9 @@ Este proyecto busca practicar:
 - lógica de programación básica
 - trabajo con Git y GitHub en equipo
 - automatización con GitHub Actions: workflows, jobs, matrices, artefactos, outputs, secretos y servicios
-- SQL en PostgreSQL: tablas, consultas, agregados, relaciones con claves foráneas y `JOIN`
+- contenedores con Docker: imágenes, Dockerfile, volúmenes y Docker Compose
+- conexión de una aplicación Python a PostgreSQL
+- SQL en PostgreSQL: tablas, consultas, agregados, relaciones con claves foráneas, `JOIN` y subconsultas
 
 ## Requisitos
 
@@ -89,7 +93,8 @@ Necesitas tener instalado:
 
 - Python 3
 - Git
-- Docker (para las clases de `docker/` y `sql/`)
+- Docker y Docker Compose (para las clases de `docker/` y el reto final de `sql/`)
+- Un cliente de PostgreSQL para las clases de SQL: pgAdmin (de [clase-docker3](docker/clase-docker3/README.md)) o la extensión PostgreSQL de VS Code
 
 ## Cómo ejecutarlo
 
@@ -138,10 +143,20 @@ python3 git/clase-github-actions/escaneo_seguridad.py .github/workflows/data/ven
 
 Para el desafío final hay que crear antes el secreto `DISCORD_WEBHOOK` en Settings → Secrets and variables → Actions.
 
+Para el reto final de SQL (requiere el `docker-compose.yml` y el `Dockerfile` del proyecto local, ver [su README](sql/sql-reto-final/README.md)):
+
+```bash
+cd sql/sql-reto-final
+cp .env.example .env          # y edita la contraseña
+docker compose up -d db
+# ejecuta consultas.sql sobre pruebadb (ver README del reto)
+docker compose up --build app
+```
+
 ## Nota importante
 
 La carpeta `git/clase-git` no es un proyecto funcional complejo ni un producto final. Fue principalmente una práctica para aprender a trabajar con Git, ramas, merges y pull requests. La parte más importante de ese ejercicio era el proceso de colaboración y manejo del repositorio, no la lógica del programa en sí.
 
 ## Estado del proyecto
 
-Proyecto de aprendizaje básico, orientado a practicar programación con Python y familiarizarse con Git y GitHub en un entorno sencillo.
+Proyecto de aprendizaje en curso: se va ampliando con cada clase del máster (Python, Git y GitHub Actions, Docker, SQL (junto con el reto final de SQL)).
