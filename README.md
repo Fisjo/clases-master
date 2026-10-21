@@ -59,6 +59,7 @@ Este repositorio es un conjunto de ejercicios prácticos para aprender Python y,
 - `sql/`: clases de SQL.
   - [`clase-sql1`](sql/clase-sql1/README.md): `CREATE TABLE`, `ALTER TABLE`, `INSERT`, `SELECT` con `WHERE`, `ORDER BY`, `LIMIT`, funciones, `GROUP BY`/`HAVING`, `UPDATE` y `DELETE` sobre la tabla `peliculas`.
   - [`clase-sql2`](sql/clase-sql2/README.md): relaciones entre tablas (primary key, foreign key; 1:1, 1:N y N:M), diseño y diagramas con dbdiagram.io, `REFERENCES` y `INNER`/`LEFT`/`RIGHT`/`FULL OUTER JOIN` con `IS NULL`, varias tablas y `GROUP BY`.
+  - [`clase-sql3`](sql/clase-sql3/README.md): entregable (`Entregable.sql`) sobre `departamentos`, `empleados` y `proyectos`: tablas relacionadas, comparación de `INNER`/`LEFT`/`RIGHT`/`FULL OUTER JOIN` y subconsultas en el `WHERE` (`AVG`, `MAX`, búsqueda de un `id`).
 
 - `Dockerfile` y `requirements.txt` (raíz): imagen para ejecutar los tests de `docker/clase-docker2` con `pytest` y `hypothesis`.
 
@@ -81,7 +82,7 @@ Este proyecto busca practicar:
 - lógica de programación básica
 - trabajo con Git y GitHub en equipo
 - automatización con GitHub Actions: workflows, jobs, matrices, artefactos, outputs, secretos y servicios
-- SQL en PostgreSQL: tablas, consultas, agregados, relaciones con claves foráneas y `JOIN`
+- SQL en PostgreSQL: tablas, consultas, agregados, relaciones con claves foráneas, `JOIN` y subconsultas
 
 ## Requisitos
 
