@@ -9,9 +9,11 @@ Explicación organizada de la presentación **Docker 2** (Máster en Desarrollo 
 | `precios.py` | Función `precio_final(precio, descuento=0)` de la Práctica 1 |
 | `test_precios.py` | Tests con `pytest` y `hypothesis` (ejemplos, propiedades y entradas inválidas) |
 | `info-clase.md` | Apuntes sueltos de clase (Dockerfile, `docker build -t prueba .`, `docker run --rm --name -v`) |
+| `Dockerfile` | Imagen que instala las dependencias y ejecuta `pytest` |
+| `requirements.txt` | Dependencias: `pytest` y `hypothesis` |
 | `README.md` | Esta guía |
 
-El `Dockerfile` y el `requirements.txt` (`pytest`, `hypothesis`) están en la **raíz del repositorio** (no en esta carpeta) y construyen esta práctica. Los comandos se lanzan **desde la raíz**, porque el contexto del build (`.`) es la raíz y `pytest` descubre los tests en `docker/clase-docker2/`:
+El `Dockerfile` y el `requirements.txt` (`pytest`, `hypothesis`) están en esta misma carpeta y construyen la práctica. Los comandos se lanzan **desde esta carpeta** (`cd docker/clase-docker2`), porque el contexto del build (`.`) es esta carpeta y `pytest` descubre aquí los tests:
 
 ```bash
 docker build -t mis-tests .

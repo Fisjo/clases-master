@@ -36,7 +36,7 @@ Este repositorio reúne los ejercicios y apuntes de las clases del máster: Pyth
   - resolución de conflictos
   - flujo de trabajo colaborativo
 
-- `git/clase-github-actions/`: cuarta clase, dedicada a GitHub Actions. Contiene los apuntes (`info-clase.md`) y un script de ejemplo (`escaneo_seguridad.py`). Los workflows están en `.github/workflows/` (GitHub solo detecta los que están directamente en esa carpeta) y sus archivos de datos JSON en `.github/workflows/data/`. Se trabajan:
+- `github-actions/`: cuarta clase, dedicada a GitHub Actions. Contiene los apuntes (`info-clase.md`) y un script de ejemplo (`escaneo_seguridad.py`). Los workflows están en `.github/workflows/` (GitHub solo detecta los que están directamente en esa carpeta) y sus archivos de datos JSON en `.github/workflows/data/`. Se trabajan:
   - estructura de un workflow (`on`, `jobs`, `runs-on`, `steps`)
   - triggers manuales con `workflow_dispatch` e `inputs`
   - uso de acciones (`uses`) como `actions/checkout`
@@ -53,7 +53,7 @@ Este repositorio reúne los ejercicios y apuntes de las clases del máster: Pyth
 
 - `docker/`: clases de Docker, cada una con un `README.md` que explica la presentación correspondiente:
   - [`clase-docker1`](docker/clase-docker1/README.md): kernel, máquinas virtuales, contenedores, Dockerfile, imágenes y primeros comandos.
-  - [`clase-docker2`](docker/clase-docker2/README.md): `requirements.txt`, bind mounts, `ENTRYPOINT`/`CMD`, entorno Linux, puertos con Nginx e inspección de errores. Incluye `precios.py` y `test_precios.py`, que se ejecutan con el `Dockerfile` y el `requirements.txt` de la raíz del repositorio.
+  - [`clase-docker2`](docker/clase-docker2/README.md): `requirements.txt`, bind mounts, `ENTRYPOINT`/`CMD`, entorno Linux, puertos con Nginx e inspección de errores. Incluye `precios.py` y `test_precios.py`, junto con su propio `Dockerfile` y `requirements.txt` (`pytest` y `hypothesis`) para ejecutar los tests.
   - [`clase-docker3`](docker/clase-docker3/README.md): Docker Compose, volúmenes y PostgreSQL + pgAdmin.
 
 - `sql/`: clases de SQL.
@@ -61,8 +61,6 @@ Este repositorio reúne los ejercicios y apuntes de las clases del máster: Pyth
   - [`clase-sql2`](sql/clase-sql2/README.md): relaciones entre tablas (primary key, foreign key; 1:1, 1:N y N:M), diseño y diagramas con dbdiagram.io, `REFERENCES` y `INNER`/`LEFT`/`RIGHT`/`FULL OUTER JOIN` con `IS NULL`, varias tablas y `GROUP BY`.
   - [`clase-sql3`](sql/clase-sql3/README.md): entregable (`Entregable.sql`) sobre `departamentos`, `empleados` y `proyectos`: tablas relacionadas, comparación de `INNER`/`LEFT`/`RIGHT`/`FULL OUTER JOIN` y subconsultas en el `WHERE` (`AVG`, `MAX`, búsqueda de un `id`).
   - [`sql-reto-final`](sql/sql-reto-final/README.md): reto final. PostgreSQL y una aplicación Python (`main.py`, con `psycopg`) en contenedores con Docker Compose; consulta la tabla `videojuegos` y la imprime. Incluye `consultas.sql`, `requirements.txt`, `.env.example`, `.dockerignore` y `.gitignore`; el `Dockerfile` y el `docker-compose.yml` solo se explican en su README, no están en el repositorio.
-
-- `Dockerfile` y `requirements.txt` (raíz): imagen para ejecutar los tests de `docker/clase-docker2` con `pytest` y `hypothesis`.
 
 ## Objetivos de aprendizaje
 
@@ -128,9 +126,10 @@ cd python/clase-python3
 python3 clase3.py
 ```
 
-Para los tests de la clase Docker 2 (desde la raíz del repositorio):
+Para los tests de la clase Docker 2:
 
 ```bash
+cd docker/clase-docker2
 docker build -t mis-tests .
 docker run --rm mis-tests
 ```
@@ -138,7 +137,7 @@ docker run --rm mis-tests
 Para la clase de GitHub Actions, los workflows se lanzan desde la pestaña **Actions** del repositorio (**Run workflow**). El script de ejemplo se puede probar en local:
 
 ```bash
-python3 git/clase-github-actions/escaneo_seguridad.py .github/workflows/data/ventas.json
+python3 github-actions/escaneo_seguridad.py .github/workflows/data/ventas.json
 ```
 
 Para el desafío final hay que crear antes el secreto `DISCORD_WEBHOOK` en Settings → Secrets and variables → Actions.

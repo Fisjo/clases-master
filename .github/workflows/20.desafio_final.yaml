@@ -18,7 +18,7 @@ jobs:
         run: python3 -m json.tool .github/workflows/data/ventas.json > /dev/null && echo ".github/workflows/data/ventas.json es válido"
       - name: Escaneo de seguridad (claves API expuestas)
         if: ${{ inputs.tests_seguridad == 'si' }}
-        run: python3 git/clase-github-actions/escaneo_seguridad.py .github/workflows/data/ventas.json
+        run: python3 github-actions/escaneo_seguridad.py .github/workflows/data/ventas.json
 
   procesamiento:
     runs-on: ubuntu-latest
