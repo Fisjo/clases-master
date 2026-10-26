@@ -142,7 +142,7 @@ app-1  | (3, 'God of War', 'PS4', 2018)
 
 ## Explicación de los archivos del proyecto
 
-En esta carpeta se guardan [`consultas.sql`](consultas.sql), [`.env.example`](.env.example), [`main.py`](main.py), [`requirements.txt`](requirements.txt), [`.dockerignore`](.dockerignore) y [`.gitignore`](.gitignore). `docker-compose.yml` y `Dockerfile` se explican aquí pero **no se incluyen como archivos**, para que esta carpeta no sea por sí sola desplegable ni choque con el `Dockerfile` de la raíz del repositorio. El `.env` real tampoco se sube (contiene credenciales).
+En esta carpeta se guardan [`consultas.sql`](consultas.sql), [`.env.example`](.env.example), [`main.py`](main.py), [`requirements.txt`](requirements.txt), [`.dockerignore`](.dockerignore) y [`.gitignore`](.gitignore). `docker-compose.yml` y `Dockerfile` se explican aquí pero **no se incluyen como archivos**, para que esta carpeta no sea por sí sola desplegable ni choque con el `Dockerfile` de `docker/clase-docker2`. El `.env` real tampoco se sube (contiene credenciales).
 
 ### `docker-compose.yml`
 
