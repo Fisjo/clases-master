@@ -5,4 +5,3 @@
 #       -- evitar la acumulacion de bicicletas en mantenimiento
 # 3. Balance de usuarios suscritos vs pago por uso, que días hay más pago por uso (predictivo)
 #       -- ajustar los precios de suscripción y pago por uso 
-
