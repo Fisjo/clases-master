@@ -1,4 +1,0 @@
-### CLASE 1 DATA-SCIENCE ###
-
-
-
