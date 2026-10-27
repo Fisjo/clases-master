@@ -1,6 +1,6 @@
 # Repositorio de clases de Máster de IA, Data & Cloud @ EDEM Escuela de Empresarios
 
-Este repositorio reúne los ejercicios y apuntes de las clases del máster: Python, Git y GitHub Actions, Docker y SQL con PostgreSQL, además de un reto final que integra SQL, Python y Docker. No se trata de un proyecto de producción, sino de un espacio para practicar y documentar cada clase (casi todas tienen su propio `README.md`).
+Este repositorio reúne los ejercicios y apuntes de las clases del máster: Python, Git y GitHub Actions, Docker, SQL con PostgreSQL y Data Science con NumPy, además de un reto final que integra SQL, Python y Docker. No se trata de un proyecto de producción, sino de un espacio para practicar y documentar cada clase (casi todas tienen su propio `README.md`).
 
 ## Estructura del repositorio
 
@@ -62,6 +62,21 @@ Este repositorio reúne los ejercicios y apuntes de las clases del máster: Pyth
   - [`clase-sql3`](sql/clase-sql3/README.md): entregable (`Entregable.sql`) sobre `departamentos`, `empleados` y `proyectos`: tablas relacionadas, comparación de `INNER`/`LEFT`/`RIGHT`/`FULL OUTER JOIN` y subconsultas en el `WHERE` (`AVG`, `MAX`, búsqueda de un `id`).
   - [`sql-reto-final`](sql/sql-reto-final/README.md): reto final. PostgreSQL y una aplicación Python (`main.py`, con `psycopg`) en contenedores con Docker Compose; consulta la tabla `videojuegos` y la imprime. Incluye `consultas.sql`, `requirements.txt`, `.env.example`, `.dockerignore` y `.gitignore`; el `Dockerfile` y el `docker-compose.yml` solo se explican en su README, no están en el repositorio.
 
+- `data-science/clase1/clase1.ipynb`: primera clase de Data Science, un notebook de Jupyter sobre NumPy. Cada celda de código tiene encima una celda de markdown que la explica, y termina con retos prácticos (simular las bicis disponibles en una red de estaciones, temperaturas, etc.). Se trabajan las siguientes funciones, métodos y atributos de NumPy:
+  - **Importación y versión:** `import numpy as np`, `np.__version__`
+  - **Atributos de un array:** `shape`, `ndim`, `size`, `dtype`
+  - **Crear arrays:** `np.array()`, `np.zeros()`, `np.ones()`, `np.arange()`, `np.linspace()`
+  - **Tipos y conversión:** `astype()`, `np.round()`
+  - **Cambiar la forma:** `reshape()` (incluido `-1` para calcular una dimensión automáticamente)
+  - **Números aleatorios:** `np.random.default_rng()` (con semilla), `integers()`, `random()`, `poisson()`
+  - **Indexado y slicing:** índices, `[fila, columna]`, `[:, col]`, `[::-1]` y listas de índices
+  - **Copias:** `copy()`
+  - **Máscaras booleanas y condiciones:** comparaciones, `&`, `sum()`, `mean()`
+  - **Posiciones y condicionales:** `np.argwhere()`, `np.where()`
+  - **Ordenar:** `np.sort()`
+  - **Operaciones entre arrays:** suma, resta y multiplicación elemento a elemento, `np.cumsum()`, `np.cumprod()`, `np.diff()`, `np.clip()`
+  - **Comprobaciones:** `np.array_equal()`
+
 ## Objetivos de aprendizaje
 
 Este proyecto busca practicar:
@@ -84,6 +99,7 @@ Este proyecto busca practicar:
 - contenedores con Docker: imágenes, Dockerfile, volúmenes y Docker Compose
 - conexión de una aplicación Python a PostgreSQL
 - SQL en PostgreSQL: tablas, consultas, agregados, relaciones con claves foráneas, `JOIN` y subconsultas
+- análisis de datos con NumPy: arrays, indexado, máscaras booleanas, números aleatorios y operaciones vectorizadas
 
 ## Requisitos
 
@@ -92,6 +108,7 @@ Necesitas tener instalado:
 - Python 3
 - Git
 - Docker y Docker Compose (para las clases de `docker/` y el reto final de `sql/`)
+- Para el notebook de `data-science/`: Jupyter (o VS Code con la extensión Jupyter) y NumPy (`pip install numpy ipykernel`)
 - Un cliente de PostgreSQL para las clases de SQL: pgAdmin (de [clase-docker3](docker/clase-docker3/README.md)) o la extensión PostgreSQL de VS Code
 
 ## Cómo ejecutarlo
@@ -126,6 +143,13 @@ cd python/clase-python3
 python3 clase3.py
 ```
 
+Para el notebook de Data Science, ábrelo en VS Code o Jupyter, elige un kernel de Python con NumPy instalado y ejecuta las celdas en orden:
+
+```bash
+pip install numpy ipykernel
+jupyter notebook data-science/clase1/clase1.ipynb
+```
+
 Para los tests de la clase Docker 2:
 
 ```bash
@@ -158,4 +182,4 @@ La carpeta `git/clase-git` no es un proyecto funcional complejo ni un producto f
 
 ## Estado del proyecto
 
-Proyecto de aprendizaje en curso: se va ampliando con cada clase del máster (Python, Git y GitHub Actions, Docker, SQL (junto con el reto final de SQL)).
+Proyecto de aprendizaje en curso: se va ampliando con cada clase del máster (Python, Git y GitHub Actions, Docker, SQL (junto con el reto final de SQL) y Data Science con NumPy).
