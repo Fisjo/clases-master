@@ -1,6 +1,6 @@
 # Repositorio de clases de Máster de IA, Data & Cloud @ EDEM Escuela de Empresarios
 
-Este repositorio reúne los ejercicios y apuntes de las clases del máster: Python, Git y GitHub Actions, Docker, SQL con PostgreSQL y Data Science con NumPy, además de un reto final que integra SQL, Python y Docker. No se trata de un proyecto de producción, sino de un espacio para practicar y documentar cada clase (casi todas tienen su propio `README.md`).
+Este repositorio reúne los ejercicios y apuntes de las clases del máster: Python, Git y GitHub Actions, Docker, SQL con PostgreSQL y Data Science con NumPy y pandas, además de un reto final que integra SQL, Python y Docker. No se trata de un proyecto de producción, sino de un espacio para practicar y documentar cada clase (casi todas tienen su propio `README.md`).
 
 ## Estructura del repositorio
 
@@ -77,6 +77,19 @@ Este repositorio reúne los ejercicios y apuntes de las clases del máster: Pyth
   - **Operaciones entre arrays:** suma, resta y multiplicación elemento a elemento, `np.cumsum()`, `np.cumprod()`, `np.diff()`, `np.clip()`
   - **Comprobaciones:** `np.array_equal()`
 
+- `data-science/clase2/pandas.ipynb`: segunda clase de Data Science, un notebook de Jupyter sobre pandas, con el mismo formato (una celda de markdown explicativa sobre cada celda de código). Usa los datos de `data-science/clase2/data/` (`stations.csv`, `usage_hourly.csv` y `weather_daily.json`, entre otros) sobre una red de bicis compartidas. Se trabajan las siguientes funciones y métodos de pandas:
+  - **Estructuras:** `pd.Series()`, `pd.DataFrame()`, `columns`, `dtypes`
+  - **Cargar datos:** `pd.read_csv()`, `pd.read_json()`
+  - **Explorar:** `head()`, `describe()`, `isna()`, `duplicated()`, `nunique()`, `value_counts()`
+  - **Columnas nuevas:** asignación directa, `round()`, `np.where()`
+  - **Seleccionar y filtrar:** `loc`, `iloc`, `query()`, máscaras booleanas con `&`, `str.contains()`
+  - **Ordenar:** `sort_values()` (varias columnas y orden por columna), `tolist()`
+  - **Limpieza:** `copy()`, `drop_duplicates()`, `between()`, `reset_index()`
+  - **Fechas:** `pd.to_datetime()`, accesor `.dt` (`date`, `hour`, `day_name()`, `dayofweek`)
+  - **Agrupar y rellenar nulos:** `groupby()`, `ffill()`, `bfill()`, `fillna()`, `transform()`, `median()`
+  - **Texto:** `str.strip()`, `str.lower()`, `str.title()`
+  - **Retos:** valores imposibles, estaciones grandes del centro, ranking de lecturas, limpieza de duplicados, fechas, nulos y distritos
+
 ## Objetivos de aprendizaje
 
 Este proyecto busca practicar:
@@ -100,6 +113,7 @@ Este proyecto busca practicar:
 - conexión de una aplicación Python a PostgreSQL
 - SQL en PostgreSQL: tablas, consultas, agregados, relaciones con claves foráneas, `JOIN` y subconsultas
 - análisis de datos con NumPy: arrays, indexado, máscaras booleanas, números aleatorios y operaciones vectorizadas
+- análisis de datos con pandas: `DataFrame`, filtrado, limpieza, fechas, agrupaciones y tratamiento de nulos
 
 ## Requisitos
 
@@ -108,7 +122,7 @@ Necesitas tener instalado:
 - Python 3
 - Git
 - Docker y Docker Compose (para las clases de `docker/` y el reto final de `sql/`)
-- Para el notebook de `data-science/`: Jupyter (o VS Code con la extensión Jupyter) y NumPy (`pip install numpy ipykernel`)
+- Para el notebook de `data-science/`: Jupyter (o VS Code con la extensión Jupyter) y NumPy y pandas (`pip install numpy pandas ipykernel`)
 - Un cliente de PostgreSQL para las clases de SQL: pgAdmin (de [clase-docker3](docker/clase-docker3/README.md)) o la extensión PostgreSQL de VS Code
 
 ## Cómo ejecutarlo
@@ -143,11 +157,12 @@ cd python/clase-python3
 python3 clase3.py
 ```
 
-Para el notebook de Data Science, ábrelo en VS Code o Jupyter, elige un kernel de Python con NumPy instalado y ejecuta las celdas en orden:
+Para el notebook de Data Science, ábrelo en VS Code o Jupyter, elige un kernel de Python con NumPy y pandas instalados y ejecuta las celdas en orden. El notebook de pandas carga los datos con rutas relativas (`./data/...`), así que debe ejecutarse desde su carpeta:
 
 ```bash
-pip install numpy ipykernel
+pip install numpy pandas ipykernel
 jupyter notebook data-science/clase1/clase1.ipynb
+jupyter notebook data-science/clase2/pandas.ipynb
 ```
 
 Para los tests de la clase Docker 2:
@@ -182,4 +197,4 @@ La carpeta `git/clase-git` no es un proyecto funcional complejo ni un producto f
 
 ## Estado del proyecto
 
-Proyecto de aprendizaje en curso: se va ampliando con cada clase del máster (Python, Git y GitHub Actions, Docker, SQL (junto con el reto final de SQL) y Data Science con NumPy).
+Proyecto de aprendizaje en curso: se va ampliando con cada clase del máster (Python, Git y GitHub Actions, Docker, SQL (junto con el reto final de SQL) y Data Science con NumPy y pandas).
