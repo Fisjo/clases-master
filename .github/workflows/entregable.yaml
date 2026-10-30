@@ -1,0 +1,95 @@
+name: Pipeline de Ventas
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_security_tests:
+        description: "¿Ejecutar los Tests de Seguridad?"
+        type: choice
+        required: true
+        default: "no"
+        options:
+          - "sí"
+          - "no"
+
+jobs:
+  ci-seguridad:
+    name: Job 1 - CI & Seguridad
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Validar que ventas.json es un JSON válido
+        run: |
+          python3 -m json.tool ventas.json > /dev/null
+          echo "ventas.json es un JSON válido"
+
+      - name: Escaneo de seguridad simulado (claves API expuestas)
+        if: ${{ inputs.run_security_tests == 'sí' }}
+        run: |
+          cat > security_scan.py << 'EOF'
+          import re
+          import sys
+
+          PATTERNS = {
+              "Generic API key": r"(?i)api[_-]?key[\"']?\s*[:=]\s*[\"']?[A-Za-z0-9_\-]{16,}",
+              "AWS Access Key": r"AKIA[0-9A-Z]{16}",
+              "GitHub token": r"gh[pousr]_[A-Za-z0-9]{36,}",
+              "Bearer token": r"(?i)bearer\s+[A-Za-z0-9_\-\.]{20,}",
+          }
+
+          print("Iniciando escaneo de seguridad simulado...")
+          with open("ventas.json", encoding="utf-8") as f:
+              content = f.read()
+
+          findings = [name for name, pat in PATTERNS.items() if re.search(pat, content)]
+
+          if findings:
+              print("Posibles claves expuestas: " + ", ".join(findings))
+              sys.exit(1)
+          print("No se encontraron claves API expuestas.")
+          EOF
+          python3 security_scan.py
+
+  procesamiento:
+    name: Job 2 - Procesamiento (${{ matrix.environment }})
+    needs: ci-seguridad
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [staging, production]
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Generar reporte para ${{ matrix.environment }}
+        run: |
+          {
+            echo "Reporte de ventas - entorno: ${{ matrix.environment }}"
+            echo "Fecha: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            echo "Commit: ${{ github.sha }}"
+            echo "Ejecutado por: ${{ github.actor }}"
+            echo "Procesamiento simulado completado."
+          } > reporte-${{ matrix.environment }}.txt
+          cat reporte-${{ matrix.environment }}.txt
+
+      - name: Subir reporte como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-${{ matrix.environment }}
+          path: reporte-${{ matrix.environment }}.txt
+
+  notificacion:
+    name: Job 3 - Notificación de Éxito
+    needs: [ci-seguridad, procesamiento]
+    if: ${{ success() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simular envío de notificación a Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          echo "::add-mask::$DISCORD_WEBHOOK"
+          echo "Enviando notificación de éxito a: $DISCORD_WEBHOOK"
+          echo "Pipeline completado correctamente."
