@@ -6,3 +6,4 @@ __pycache__/
 .venv
 /data-science/clase2/data
 /venv
+.env
