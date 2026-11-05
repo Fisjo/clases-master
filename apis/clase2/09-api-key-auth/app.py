@@ -24,7 +24,7 @@ app = FastAPI(title="API Key Auth")
 # (FastAPI's default is a generic 401 Not authenticated).
 # TODO: Which header carries the key, and which value turns the automatic error off?
 # Hint: the header is X-API-Key; auto_error takes a boolean
-api_key_header = APIKeyHeader(name="_____", auto_error=_____)
+api_key_header = APIKeyHeader(name="X-API-Key",auto_error=False)
 
 # HTTPBasic (as in Exercise 08) is used only to rotate or revoke a key:
 # your username and password prove who you are even if you lost the key.
@@ -76,7 +76,7 @@ def generate_api_key() -> str:
     """Generate a new random API key (about 256 bits of entropy)."""
     # TODO: Generate a cryptographically secure, URL-safe random string of 32 bytes
     # Hint: secrets.token_urlsafe(32)  (do NOT use uuid4 or random for secrets)
-    return API_KEY_PREFIX + secrets._____(32)
+    return API_KEY_PREFIX + secrets.token_urlsafe(32)
 
 
 def hash_api_key(key: str) -> str:
@@ -89,7 +89,7 @@ def hash_api_key(key: str) -> str:
     """
     # TODO: Hash the key with SHA-256 and return it as a hex string
     # Hint: hashlib.sha256(...).hexdigest()
-    return hashlib._____(key.encode()).hexdigest()
+    return hashlib.sha256(key.encode()).hexdigest()
 
 
 def find_user_by_api_key(api_key: str) -> str | None:
@@ -102,7 +102,7 @@ def find_user_by_api_key(api_key: str) -> str | None:
         # character differs or the last one does
         # TODO: Compare the hashes in constant time (never use == for secrets)
         # Hint: hmac.compare_digest(a, b) takes the same time wherever a and b differ
-        if stored_hash and hmac._____(stored_hash, candidate_hash):
+        if stored_hash and hmac.compare_digest(stored_hash, candidate_hash):
             return username
 
     return None
@@ -119,7 +119,7 @@ def get_current_user(api_key: Annotated[str | None, Depends(api_key_header)]) ->
         # Hint: 401 (the invalid-key case below uses the same one, plus WWW-Authenticate: ApiKey)
         # "ApiKey" is not an IANA-registered WWW-Authenticate scheme (nor is FastAPI's "APIKey"); fine for teaching
         raise HTTPException(
-            status_code=_____,
+            status_code=401,
             detail="API key missing: include the X-API-Key header",
             headers={"WWW-Authenticate": "ApiKey"},
         )
@@ -145,7 +145,7 @@ def get_basic_user(creds: Annotated[HTTPBasicCredentials, Depends(basic)]) -> st
         raise HTTPException(
             status_code=401,
             detail="Invalid credentials",
-            headers={"_____": 'Basic realm="Authentication Required"'},
+            headers={"WWW-Authenticate": 'Basic realm="Authentication Required"'},
         )
     return username
 
@@ -183,7 +183,7 @@ def register(data: UserCreate) -> dict[str, str]:
 
 # TODO: Which method CREATES something new (a new key on every call)?
 # Hint: post (lowercase: @app.post)
-@app._____("/api-key/rotate")
+@app.post("/api-key/rotate")
 def rotate_api_key(user: Annotated[str, Depends(get_basic_user)]) -> dict[str, str]:
     """
     Issue a new API key and invalidate the old one. Protected by Basic Auth.
@@ -221,6 +221,6 @@ def revoke_api_key(user: Annotated[str, Depends(get_basic_user)]) -> dict[str, s
 # TODO: Protect this route: which dependency reads the key and gives us the user?
 # Hint: get_current_user, defined above. Depends() takes the function itself, without ()
 @app.get("/users")
-def get_users(user: Annotated[str, Depends(_____)]) -> dict[str, object]:
+def get_users(user: Annotated[str, Depends(get_current_user)]) -> dict[str, object]:
     """List all users. Clients must send a valid X-API-Key header."""
     return {"users": list(users), "count": len(users)}
