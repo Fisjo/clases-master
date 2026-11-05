@@ -5,3 +5,4 @@ __pycache__/
 .DS_Store
 .venv
 /data-science/clase2/data
+/venv
