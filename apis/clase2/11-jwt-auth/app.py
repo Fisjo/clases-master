@@ -30,7 +30,7 @@ app = FastAPI(title="JWT Authentication API")
 # The secret comes from the environment. If it is not set, a random one is
 # generated on every start (tokens stop working after a restart).
 JWT_SECRET = os.environ.get("JWT_SECRET_KEY") or secrets.token_hex(32)  # from env; random per run if unset
-JWT_ALG = "_____"  # TODO: Which signing algorithm? (HMAC with SHA-256)
+JWT_ALG = "HS256"  # TODO: Which signing algorithm? (HMAC with SHA-256)
 # Hint: HS256
 
 # Short-lived access tokens + longer-lived refresh tokens
@@ -100,7 +100,7 @@ class LoginResponse(TokenPair):
 
 
 def unauthorized(detail: str) -> HTTPException:
-    return HTTPException(status_code=401, detail=detail, headers={"_____": "Bearer"})  # TODO: Which header tells the client how to authenticate?
+    return HTTPException(status_code=401, detail=detail, headers={"WWW-Authenticate": "Bearer"})  # TODO: Which header tells the client how to authenticate?
     # Hint: WWW-Authenticate
 
 
@@ -109,13 +109,13 @@ def create_token(username: str, token_type: str, lifetime: timedelta) -> str:
     claims = {
         "sub": username,
         "iat": now,
-        "_____": now + lifetime,  # TODO: Which claim says when the token expires?
+        "exp": now + lifetime,  # TODO: Which claim says when the token expires?
         # Hint: exp
-        "_____": JWT_ISSUER,  # TODO: Which claim says WHO created the token?
+        "iss": JWT_ISSUER,  # TODO: Which claim says WHO created the token?
         # Hint: iss
-        "_____": JWT_AUDIENCE,  # TODO: Which claim says WHO the token is for?
+        "aud": JWT_AUDIENCE,  # TODO: Which claim says WHO the token is for?
         # Hint: aud
-        "_____": str(uuid.uuid4()),  # TODO: Which claim is the unique id of the token?
+        "jti": str(uuid.uuid4()),  # TODO: Which claim is the unique id of the token?
         # Hint: jti (JWT ID)
         "type": token_type,
     }
@@ -145,10 +145,10 @@ def decode_token(token: str, expected_type: str | None) -> dict:
         raise unauthorized("Token has expired")
     except jwt.InvalidTokenError:  # bad signature, wrong iss or aud, malformed...
         raise unauthorized("Invalid token")
-    if expected_type is not None and claims["_____"] != expected_type:  # TODO: Which claim says access or refresh?
+    if expected_type is not None and claims["type"] != expected_type:  # TODO: Which claim says access or refresh?
         # Hint: type
         raise unauthorized(f"Wrong token type: expected {expected_type}")
-    if claims["jti"] in _____:  # TODO: Which set holds the revoked token ids?
+    if claims["jti"] in revoked:  # TODO: Which set holds the revoked token ids?
         # Hint: revoked
         raise unauthorized("Token has been revoked")
     return claims
@@ -194,14 +194,14 @@ def login(data: Credentials) -> LoginResponse:
     # TODO: Check against a dummy hash if the user is unknown
     # Hint: DUMMY_HASH
     # Always run the bcrypt check, even for an unknown user, so timing does not reveal who exists
-    password_ok = verify_password(data.password, users.get(data.username, _____))
+    password_ok = verify_password(data.password, users.get(data.username, DUMMY_HASH))
     if data.username not in users or not password_ok:
         raise unauthorized("Invalid credentials")
     return LoginResponse(
         message="Login successful",
-        access_token=_____(data.username),  # TODO: Create the access token
+        access_token=create_access_token(data.username),  # TODO: Create the access token
         # Hint: create_access_token
-        refresh_token=_____(data.username),  # TODO: Create the refresh token
+        refresh_token=create_refresh_token(data.username),  # TODO: Create the refresh token
         # Hint: create_refresh_token
         expires_in=ACCESS_TOKEN_MINUTES * 60,
     )
@@ -213,7 +213,7 @@ def login(data: Credentials) -> LoginResponse:
 
 # TODO: Which HTTP method? (it creates a new token)
 # Hint: post (lowercase: @app.post)
-@app._____("/refresh")
+@app.post("/refresh")
 def refresh(token: Annotated[str, Depends(get_token)]) -> dict[str, str | int]:
     """
     Get a new access token - Requires a REFRESH token
@@ -221,7 +221,7 @@ def refresh(token: Annotated[str, Depends(get_token)]) -> dict[str, str | int]:
     Authorization: Bearer <refresh_token>
     An access token is rejected here, and a refresh token is rejected everywhere else.
     """
-    claims = decode_token(token, "_____")  # TODO: Accept ONLY refresh tokens here
+    claims = decode_token(token, "refresh")  # TODO: Accept ONLY refresh tokens here
     # Hint: refresh
     return {
         "access_token": create_access_token(claims["sub"]),
@@ -249,7 +249,7 @@ def logout(token: Annotated[str, Depends(get_token)]) -> dict[str, str]:
 
 @app.get("/profile")  # TODO: Protect it with the dependency that returns the user from an ACCESS token
 # Hint: get_current_user, defined above. Depends() takes the function itself, without ()
-def profile(user: Annotated[str, Depends(_____)]) -> dict[str, str]:
+def profile(user: Annotated[str, Depends(get_current_user)]) -> dict[str, str]:
     """
     Get current user's profile - Protected endpoint
 
