@@ -45,7 +45,7 @@ users: dict[str, str] = {}
 # OpenWeatherMap Configuration
 # TODO: Get your free API key from https://openweathermap.org/api
 # Hint: the environment variable is called OPENWEATHER_API_KEY (never paste the key in the code)
-OPENWEATHER_API_KEY = os.environ.get("_____")
+OPENWEATHER_API_KEY = os.environ.get("OPENWEATHER_API_KEY")
 GEOCODING_API_URL = "https://api.openweathermap.org/geo/1.0/direct"
 WEATHER_API_URL = "https://api.openweathermap.org/data/2.5/weather"
 
@@ -120,7 +120,7 @@ def register(data: UserCreate) -> dict[str, str]:
 
 # TODO: Which HTTP method sends credentials in a body?
 # Hint: post (lowercase: @app.post)
-@app._____("/login")
+@app.post("/login")
 def login(data: Credentials) -> dict[str, str]:
     """Authenticate user and return JWT token - Public endpoint"""
     # Always run the bcrypt check, even for an unknown user, so timing does not reveal who exists
@@ -133,7 +133,7 @@ def login(data: Credentials) -> dict[str, str]:
         )
     # TODO: Create the JWT access token
     # Hint: create_access_token(data.username) is defined above
-    access_token = _____(data.username)
+    access_token = create_access_token(data.username)
     return {"message": "Login successful", "access_token": access_token, "token_type": "bearer"}
 
 
@@ -189,12 +189,12 @@ def weather(
         # (an f-string URL would let the user inject extra parameters).
         # TODO: Fill the geocoding query parameters (the query and the API key)
         # Hint: "q" is query, "appid" is OPENWEATHER_API_KEY
-        geo_params = {"q": _____, "appid": _____, "limit": 1}
+        geo_params = {"q": query, "appid": OPENWEATHER_API_KEY, "limit": 1}
 
         try:
             # TODO: Make the GET request to the geocoding API
             # Hint: client.get(GEOCODING_API_URL, params=geo_params)
-            geo_response = client._____(GEOCODING_API_URL, params=geo_params)
+            geo_response = client.get(GEOCODING_API_URL, params=geo_params)
 
             # 401 means OUR key is wrong or not active yet: a server misconfiguration, not an upstream failure
             if geo_response.status_code == 401:
@@ -204,7 +204,7 @@ def weather(
             # Check if the request was successful
             # TODO: Which status code means success?
             # Hint: 200
-            if geo_response.status_code != _____:
+            if geo_response.status_code != 200:
                 raise HTTPException(
                     status_code=502,
                     detail=f"Geocoding API request failed (upstream status {geo_response.status_code})",
@@ -212,7 +212,7 @@ def weather(
 
             # TODO: Parse the JSON response from the geocoding API
             # Hint: geo_response.json()
-            geo_data = geo_response._____()
+            geo_data = geo_response.json()
 
             # Check if city was found
             if not geo_data:
@@ -245,9 +245,9 @@ def weather(
         # TODO: Fill the weather query parameters (coordinates and API key)
         # Hint: "lat" is latitude, "lon" is longitude, "appid" is OPENWEATHER_API_KEY
         weather_params = {
-            "lat": _____,
-            "lon": _____,
-            "appid": _____,
+            "lat": latitude,
+            "lon": longitude,
+            "appid": OPENWEATHER_API_KEY,
             "units": "metric",
             "lang": "en",
         }
@@ -255,7 +255,7 @@ def weather(
         try:
             # TODO: Make the GET request to the weather API
             # Hint: client.get(WEATHER_API_URL, params=weather_params)
-            weather_response = client._____(WEATHER_API_URL, params=weather_params)
+            weather_response = client.get(WEATHER_API_URL, params=weather_params)
 
             if weather_response.status_code == 401:  # same rule as above: our key, our problem
                 logger.error("OpenWeatherMap rejected the API key: check OPENWEATHER_API_KEY")
@@ -269,7 +269,7 @@ def weather(
 
             # TODO: Parse the JSON response from the weather API
             # Hint: weather_response.json()
-            weather_data = weather_response._____()
+            weather_data = weather_response.json()
 
             return {
                 "location": {
