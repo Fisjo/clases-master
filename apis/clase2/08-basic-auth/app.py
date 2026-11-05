@@ -61,14 +61,14 @@ def get_current_user(creds: Annotated[HTTPBasicCredentials, Depends(security)]) 
         raise HTTPException(
             status_code=401,
             detail="Invalid credentials",
-            headers={"_____": 'Basic realm="Authentication Required"'},
+            headers={"WWW-Authenticate": 'Basic realm="Authentication Required"'},
         )
     return username
 
 
 # TODO: Which method CREATES a user?
 # Hint: post (lowercase: @app.post)
-@app._____("/users", status_code=201)
+@app.post("/users", status_code=201)
 def register_user(data: UserCreate) -> dict[str, str]:
     if data.username in users:
         raise HTTPException(status_code=409, detail="User already exists")
@@ -79,5 +79,5 @@ def register_user(data: UserCreate) -> dict[str, str]:
 # TODO: Protect this route: which dependency checks the credentials and gives us the user?
 # Hint: get_current_user, defined above. Depends() takes the function itself, without ()
 @app.get("/users")
-def get_users(user: Annotated[str, Depends(_____)]) -> dict[str, list[str]]:
+def get_users(user: Annotated[str, Depends(get_current_user)]) -> dict[str, list[str]]:
     return {"users": list(users)}
