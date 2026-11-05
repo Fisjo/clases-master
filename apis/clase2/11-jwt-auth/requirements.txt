@@ -1,0 +1,13 @@
+# Exercise 11: JWT Authentication - Python Dependencies
+
+# Web framework (includes the "fastapi" command and the dev server)
+fastapi[standard]==0.162.0
+
+# Password hashing
+bcrypt==5.0.0
+
+# JWT encoding and decoding
+PyJWT==2.15.1
+
+# Reads the .env file of the exercise at startup
+python-dotenv==1.2.4
