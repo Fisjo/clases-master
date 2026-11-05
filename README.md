@@ -1,6 +1,6 @@
 # Repositorio de clases de Máster de IA, Data & Cloud @ EDEM Escuela de Empresarios
 
-Este repositorio reúne los ejercicios y apuntes de las clases del máster: Python, Git y GitHub Actions, Docker, SQL con PostgreSQL y Data Science con NumPy y pandas, además de un reto final que integra SQL, Python y Docker. No se trata de un proyecto de producción, sino de un espacio para practicar y documentar cada clase (casi todas tienen su propio `README.md`).
+Este repositorio reúne los ejercicios y apuntes de las clases del máster: Python, Git y GitHub Actions, Docker, SQL con PostgreSQL, APIs con FastAPI y Data Science con NumPy, pandas y visualización, además de un reto final que integra SQL, Python y Docker. No se trata de un proyecto de producción, sino de un espacio para practicar y documentar cada clase (casi todas tienen su propio `README.md`).
 
 ## Estructura del repositorio
 
@@ -69,6 +69,15 @@ Este repositorio reúne los ejercicios y apuntes de las clases del máster: Pyth
   - [`clase-sql3`](sql/clase-sql3/README.md): entregable (`Entregable.sql`) sobre `departamentos`, `empleados` y `proyectos`: tablas relacionadas, comparación de `INNER`/`LEFT`/`RIGHT`/`FULL OUTER JOIN` y subconsultas en el `WHERE` (`AVG`, `MAX`, búsqueda de un `id`).
   - [`sql-reto-final`](sql/sql-reto-final/README.md): reto final. PostgreSQL y una aplicación Python (`main.py`, con `psycopg`) en contenedores con Docker Compose; consulta la tabla `videojuegos` y la imprime. Incluye `consultas.sql`, `requirements.txt`, `.env.example`, `.dockerignore` y `.gitignore`; el `Dockerfile` y el `docker-compose.yml` solo se explican en su README, no están en el repositorio.
 
+- `apis/`: clases de APIs con FastAPI, con sus apuntes en [`apis/README.md`](apis/README.md):
+  - `clase1/`: [`ejercicio2.md`](apis/clase1/ejercicio2.md) (qué es una API, importancia, APIs populares y una prueba real con PokéAPI), [`ejercicio3.py`](apis/clase1/ejercicio3.py) (primera app FastAPI con 5 endpoints: rutas, parámetros de ruta, JSON y modelos de Pydantic) y [`ejercicio6.py`](apis/clase1/ejercicio6.py) (API de notas con CRUD, paginación por offset y por cursor, y errores RFC 9457).
+  - `clase2/`: ejercicios con su propio `readme*.md`:
+    - [`06b-mysql-database`](apis/clase2/06b-mysql-database/readme06b.md): API sobre una base de datos MySQL en Docker (PyMySQL, SQL con parámetros, `JOIN`, transacciones y errores de integridad).
+    - [`08-basic-auth`](apis/clase2/08-basic-auth/readme08.md): autenticación Basic Auth con contraseñas hasheadas con `bcrypt`.
+    - [`09-api-key-auth`](apis/clase2/09-api-key-auth/readme09.md): autenticación con API key (hash SHA-256, mostrar una sola vez, rotar y revocar).
+    - [`10-public-api`](apis/clase2/10-public-api/readme10.md): consumo de una API pública (OpenWeatherMap) con `httpx`, y claves en `.env`.
+    - [`11-jwt-auth`](apis/clase2/11-jwt-auth/readme11.md): autenticación con JWT (access y refresh tokens, claims `exp`/`iss`/`aud`/`jti`, `/logout` con revocación).
+
 - `data-science/clase1/numpy.ipynb`: primera clase de Data Science, un notebook de Jupyter sobre NumPy. Cada celda de código tiene encima una celda de markdown que la explica, y termina con retos prácticos (simular las bicis disponibles en una red de estaciones, temperaturas, etc.). Se trabajan las siguientes funciones, métodos y atributos de NumPy:
   - **Importación y versión:** `import numpy as np`, `np.__version__`
   - **Atributos de un array:** `shape`, `ndim`, `size`, `dtype`
@@ -131,6 +140,10 @@ Este proyecto busca practicar:
 - contenedores con Docker: imágenes, Dockerfile, volúmenes y Docker Compose
 - conexión de una aplicación Python a PostgreSQL
 - SQL en PostgreSQL: tablas, consultas, agregados, relaciones con claves foráneas, `JOIN` y subconsultas
+- APIs REST con FastAPI: rutas, métodos HTTP, parámetros, validación con Pydantic, códigos de estado, paginación y errores estándar (RFC 9457)
+- acceso a MySQL desde una API: SQL con parámetros, transacciones y errores de integridad
+- autenticación de APIs: Basic Auth, API keys y JWT (access y refresh tokens)
+- consumo de APIs públicas externas con `httpx` y manejo de claves en `.env`
 - análisis de datos con NumPy: arrays, indexado, máscaras booleanas, números aleatorios y operaciones vectorizadas
 - análisis de datos con pandas: `DataFrame`, filtrado, limpieza, fechas, agrupaciones y tratamiento de nulos
 - visualización de datos con Matplotlib y Seaborn: gráficos de líneas, barras, histogramas, dispersión y mapas de calor, y análisis exploratorio (EDA)
@@ -139,13 +152,23 @@ Este proyecto busca practicar:
 
 Necesitas tener instalado:
 
-- Python 3
+- Python 3 (para las clases de `apis/` hace falta **3.10 o superior**)
 - Git
 - Docker y Docker Compose (para las clases de `docker/` y el reto final de `sql/`)
 - Para los notebooks de `data-science/`: Jupyter (o VS Code con la extensión Jupyter) y NumPy, pandas, Matplotlib y Seaborn (`pip install numpy pandas matplotlib seaborn ipykernel`)
+- Para `apis/`: FastAPI y sus dependencias (`pip install "fastapi[standard]" bcrypt PyJWT httpx python-dotenv PyMySQL cryptography`) y, para `06b-mysql-database`, Docker
 - Un cliente de PostgreSQL para las clases de SQL: pgAdmin (de [clase-docker3](docker/clase-docker3/README.md)) o la extensión PostgreSQL de VS Code
 
 ## Cómo ejecutarlo
+
+Se recomienda usar **un único entorno virtual para todo el repositorio**, en la raíz (`.venv`, que ya está en el `.gitignore`). Hace falta Python 3.10 o superior (el 3.9 del sistema en macOS no vale para `apis/`):
+
+```bash
+python3 -m venv .venv            # con un Python 3.10+ (por ejemplo, el de Homebrew)
+source .venv/bin/activate
+pip install numpy pandas matplotlib seaborn ipykernel pytest hypothesis \
+            "fastapi[standard]" bcrypt PyJWT httpx python-dotenv PyMySQL cryptography "psycopg[binary]"
+```
 
 Para ejecutar los scripts de la carpeta de Git:
 
@@ -155,6 +178,18 @@ python3 app.py
 python3 interes-compuesto.py
 python3 numeros-aleatorios.py
 ```
+
+Para las APIs (con el `.venv` activado; el detalle de cada ejercicio está en [`apis/README.md`](apis/README.md)):
+
+```bash
+cd apis/clase1
+fastapi dev ejercicio3.py        # o ejercicio6.py
+
+cd ../clase2/08-basic-auth       # o 09-api-key-auth, 10-public-api, 11-jwt-auth
+fastapi dev app.py               # documentación interactiva en http://127.0.0.1:8000/docs
+```
+
+Los ejercicios `06b-mysql-database` (MySQL con `docker compose up -d --wait`) y `10-public-api` (clave de OpenWeatherMap en su `.env`) necesitan preparación previa, explicada en [`apis/README.md`](apis/README.md). Los ficheros `.env` no se suben a Git.
 
 Para ejecutar el ejemplo introductorio de Python:
 
@@ -218,4 +253,4 @@ La carpeta `git/` no es un proyecto funcional complejo ni un producto final. Fue
 
 ## Estado del proyecto
 
-Proyecto de aprendizaje en curso: se va ampliando con cada clase del máster (Python, Git y GitHub Actions, Docker, SQL (junto con el reto final de SQL) y Data Science con NumPy, pandas y visualización con Matplotlib y Seaborn).
+Proyecto de aprendizaje en curso: se va ampliando con cada clase del máster (Python, Git y GitHub Actions, Docker, SQL (junto con el reto final de SQL), APIs con FastAPI y Data Science con NumPy, pandas y visualización con Matplotlib y Seaborn).
