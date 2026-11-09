@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadora de hipoteca</title>
+<style>
+  :root {
+    --bg: #f4f6fa; --card: #ffffff; --text: #1c2333; --muted: #5d6679;
+    --accent: #2a5bd7; --border: #d5dbe7; --error: #c62828; --result: #eef3ff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12151d; --card: #1b2030; --text: #e8ecf5; --muted: #9aa4ba;
+      --accent: #6b95ff; --border: #323a50; --error: #ff7b7b; --result: #222a42;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px 16px; background: var(--bg); color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  main { max-width: 460px; margin: 0 auto; background: var(--card); border-radius: 14px;
+    padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+  h1 { font-size: 1.4rem; margin: 0 0 20px; }
+  .field { margin-bottom: 16px; }
+  label { display: block; font-weight: 600; margin-bottom: 6px; font-size: .9rem; }
+  input {
+    width: 100%; padding: 10px 12px; font-size: 1rem; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--bg); color: var(--text);
+  }
+  input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+  input.invalid { border-color: var(--error); }
+  .error { color: var(--error); font-size: .8rem; min-height: 1.1em; margin-top: 4px; }
+  button {
+    width: 100%; padding: 12px; font-size: 1rem; font-weight: 600; cursor: pointer;
+    background: var(--accent); color: #fff; border: 0; border-radius: 8px;
+  }
+  button:hover { filter: brightness(1.1); }
+  #results { margin-top: 24px; display: none; }
+  .row { display: flex; justify-content: space-between; padding: 12px 14px;
+    background: var(--result); border-radius: 8px; margin-bottom: 8px; }
+  .row span { color: var(--muted); }
+  .row strong { font-variant-numeric: tabular-nums; }
+  .row.main strong { font-size: 1.25rem; color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Calculadora de hipoteca</h1>
+  <form id="form" novalidate>
+    <div class="field">
+      <label for="amount">Importe del préstamo (€)</label>
+      <input id="amount" type="number" min="0" step="any" inputmode="decimal" placeholder="Ej. 200000">
+      <div class="error" id="err-amount"></div>
+    </div>
+    <div class="field">
+      <label for="rate">Tipo de interés anual (%)</label>
+      <input id="rate" type="number" min="0" step="any" inputmode="decimal" placeholder="Ej. 3.25">
+      <div class="error" id="err-rate"></div>
+    </div>
+    <div class="field">
+      <label for="years">Plazo (años)</label>
+      <input id="years" type="number" min="0" step="any" inputmode="decimal" placeholder="Ej. 25">
+      <div class="error" id="err-years"></div>
+    </div>
+    <button type="submit">Calcular</button>
+  </form>
+
+  <section id="results" aria-live="polite">
+    <div class="row main"><span>Cuota mensual</span><strong id="monthly"></strong></div>
+    <div class="row"><span>Total pagado</span><strong id="total"></strong></div>
+    <div class="row"><span>Intereses totales</span><strong id="interest"></strong></div>
+  </section>
+</main>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const fmt = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" });
+
+  const rules = {
+    amount: { label: "El importe", min: 0, allowZero: false },
+    rate:   { label: "El tipo de interés", min: 0, allowZero: true },
+    years:  { label: "El plazo", min: 0, allowZero: false },
+  };
+
+  // Devuelve el valor numérico o null si no es válido (y muestra el error).
+  function validate(id) {
+    const input = $(id), err = $("err-" + id), rule = rules[id];
+    const raw = input.value.trim();
+    let msg = "";
+    const v = Number(raw);
+    if (raw === "" || !Number.isFinite(v)) msg = "Introduce un número.";
+    else if (v < 0) msg = rule.label + " no puede ser negativo.";
+    else if (v === 0 && !rule.allowZero) msg = rule.label + " debe ser mayor que 0.";
+    input.classList.toggle("invalid", !!msg);
+    err.textContent = msg;
+    return msg ? null : v;
+  }
+
+  // Sistema francés: cuota constante.
+  function calculate(principal, annualRate, years) {
+    const n = Math.round(years * 12);
+    const r = annualRate / 100 / 12;
+    const monthly = r === 0
+      ? principal / n
+      : principal * r / (1 - Math.pow(1 + r, -n));
+    const total = monthly * n;
+    return { monthly, total, interest: total - principal };
+  }
+
+  $("form").addEventListener("submit", e => {
+    e.preventDefault();
+    const p = validate("amount"), r = validate("rate"), y = validate("years");
+    if (p === null || r === null || y === null) { $("results").style.display = "none"; return; }
+    if (Math.round(y * 12) < 1) {
+      $("err-years").textContent = "El plazo debe ser de al menos 1 mes.";
+      $("years").classList.add("invalid");
+      $("results").style.display = "none";
+      return;
+    }
+    const res = calculate(p, r, y);
+    $("monthly").textContent = fmt.format(res.monthly);
+    $("total").textContent = fmt.format(res.total);
+    $("interest").textContent = fmt.format(res.interest);
+    $("results").style.display = "block";
+  });
+
+  // Validación en vivo al escribir.
+  Object.keys(rules).forEach(id => $(id).addEventListener("input", () => validate(id)));
+</script>
+</body>
+</html>
