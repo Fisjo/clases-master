@@ -50,6 +50,14 @@
   th:first-child, td:first-child { text-align: left; }
   th { color: var(--muted); font-weight: 600; }
   tfoot td { font-weight: 700; border-bottom: 0; }
+  #chart-wrap { margin-top: 24px; }
+  #chart { width: 100%; height: auto; display: block; }
+  #chart .axis { stroke: var(--border); stroke-width: 1; }
+  #chart text { fill: var(--muted); font-size: 11px; }
+  #chart .bar-capital { fill: var(--accent); }
+  #chart .bar-interest { fill: #e8903a; }
+  .legend { display: flex; gap: 16px; font-size: .85rem; color: var(--muted); margin-top: 6px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
 </style>
 </head>
 <body>
@@ -85,6 +93,14 @@
         <tbody id="schedule-body"></tbody>
         <tfoot><tr><td>Total</td><td id="sum-interest"></td><td id="sum-principal"></td><td></td></tr></tfoot>
       </table>
+    </div>
+    <div id="chart-wrap">
+      <h2>Intereses y capital por año</h2>
+      <svg id="chart" role="img" aria-label="Gráfico de barras apiladas de intereses y capital amortizado por año"></svg>
+      <div class="legend">
+        <span><i style="background:var(--accent)"></i>Capital amortizado</span>
+        <span><i style="background:#e8903a"></i>Intereses</span>
+      </div>
     </div>
   </section>
 </main>
@@ -143,6 +159,51 @@
     return rows;
   }
 
+  // Gráfico de barras apiladas (capital abajo, intereses arriba) en SVG.
+  function drawChart(rows) {
+    const W = 520, H = 240, L = 48, R = 8, T = 10, B = 28;
+    const max = Math.max(...rows.map(x => x.interest + x.capital));
+    const plotW = W - L - R, plotH = H - T - B;
+    const slot = plotW / rows.length, bw = Math.max(2, slot * 0.7);
+    const y = v => T + plotH - (v / max) * plotH;
+    const compact = new Intl.NumberFormat("es-ES", { notation: "compact", maximumFractionDigits: 1 });
+    const step = Math.ceil(rows.length / 10);
+    let svg = "";
+    for (let i = 0; i <= 4; i++) {
+      const v = max * i / 4;
+      svg += `<line class="axis" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/>` +
+             `<text x="${L - 6}" y="${y(v) + 4}" text-anchor="end">${compact.format(v)}</text>`;
+    }
+    rows.forEach((r, i) => {
+      const x = L + i * slot + (slot - bw) / 2;
+      const hc = (r.capital / max) * plotH, hi = (r.interest / max) * plotH;
+      svg += `<rect class="bar-capital" x="${x}" y="${y(r.capital)}" width="${bw}" height="${hc}"><title>Año ${r.year}: capital ${fmt.format(r.capital)}</title></rect>` +
+             `<rect class="bar-interest" x="${x}" y="${y(r.capital) - hi}" width="${bw}" height="${hi}"><title>Año ${r.year}: intereses ${fmt.format(r.interest)}</title></rect>`;
+      if (i % step === 0) svg += `<text x="${x + bw / 2}" y="${H - 10}" text-anchor="middle">${r.year}</text>`;
+    });
+    const el = $("chart");
+    el.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    el.innerHTML = svg;
+  }
+
+  const STORAGE_KEY = "hipoteca:ultimos-valores";
+  function saveValues() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(
+        { amount: $("amount").value, rate: $("rate").value, years: $("years").value }));
+    } catch (_) { /* almacenamiento no disponible: se ignora */ }
+  }
+  function restoreValues() {
+    try {
+      const v = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      if (!v) return false;
+      for (const id of ["amount", "rate", "years"]) {
+        if (typeof v[id] === "string") $(id).value = v[id];
+      }
+      return true;
+    } catch (_) { return false; }
+  }
+
   $("form").addEventListener("submit", e => {
     e.preventDefault();
     const p = validate("amount"), r = validate("rate"), y = validate("years");
@@ -163,8 +224,13 @@
     ).join("");
     $("sum-interest").textContent = fmt.format(rows.reduce((a, x) => a + x.interest, 0));
     $("sum-principal").textContent = fmt.format(rows.reduce((a, x) => a + x.capital, 0));
+    drawChart(rows);
     $("results").style.display = "block";
+    saveValues();
   });
+
+  // Al cargar: recupera los últimos valores y recalcula.
+  if (restoreValues()) $("form").requestSubmit();
 
   // Validación en vivo al escribir.
   Object.keys(rules).forEach(id => $(id).addEventListener("input", () => validate(id)));
