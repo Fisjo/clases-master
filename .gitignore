@@ -9,5 +9,8 @@ __pycache__/
 .env
 .terraform
 .terraform.lock.hcl
-/terraform/terraform.tfstate
-/terraform/terraform.tfstate.backup
+terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate
+*.tfstate.*
