@@ -1,6 +1,11 @@
 # Terraform e IaC
 
-Material de la clase de **Terraform e IaC** (Pedro Nieto, Máster en IA, Big Data y Cloud – EDEM, Bloque 1: Cloud Data) y el ejercicio práctico: crear un repositorio de GitHub completo con Terraform.
+Material de la clase de **Terraform e IaC** (Pedro Nieto, Máster en IA, Big Data y Cloud – EDEM, Bloque 1: Cloud Data). Cada clase tiene su propia carpeta, que es un proyecto de Terraform independiente (con su propio `terraform init` y su propio estado):
+
+| Carpeta | Contenido |
+|---|---|
+| [`clase1/`](clase1/clase1.tf) | Crear un repositorio de GitHub completo con Terraform |
+| [`clase2/`](clase2) | Variables, tipos y el provider `random`, generando ficheros en local |
 
 ## Resumen de la presentación (`Terraform.pdf`)
 
@@ -15,7 +20,7 @@ Material de la clase de **Terraform e IaC** (Pedro Nieto, Máster en IA, Big Dat
 9. **Repetición**: `count` y `count.index`, junto con `length()`.
 10. **Import y remote state**: `terraform import` para traer recursos existentes al estado; estado remoto para colaborar.
 
-## Ejercicio: `clase1.tf`
+## Clase 1: `clase1/clase1.tf`
 
 Crea con Terraform lo mismo que en la diapositiva 9 se hacía a mano (repo con ramas `main` y `develop`), añadiendo protección y secretos. Recursos, en orden lógico:
 
@@ -40,10 +45,10 @@ Conceptos de la clase que aparecen: dependencias implícitas (`github_repository
 
 > Nota: `clase1.tf` no declara los providers (`required_providers` / `provider`). Hay que añadirlos (p. ej. en un `provider.tf`) con la autenticación de GitHub antes de ejecutar.
 
-## Uso
+### Uso (clase 1)
 
 ```bash
-cd terraform
+cd terraform/clase1
 export GITHUB_TOKEN=<tu_token>      # autenticación del provider github
 terraform init
 terraform plan -var "password=<secreto>"
@@ -51,4 +56,34 @@ terraform apply -var "password=<secreto>"
 terraform destroy -var "password=<secreto>"   # para limpiar
 ```
 
-No subas al repo `terraform.tfstate`, `.terraform/` ni ficheros con secretos (`*.tfvars` con contraseñas).
+## Clase 2: `clase2/`
+
+Ejercicio local, sin credenciales ni cuentas en la nube: usa solo los providers `local` y `random` para practicar variables y dependencias.
+
+| Fichero | Contenido |
+|---|---|
+| `main.tf` | Recursos: `local_file.pet`, `random_pet.my-pet` y `local_file.pet-name` |
+| `variables.tf` | Variables de varios tipos (ver abajo) |
+| `terraform.tfvars` | Valores que sobrescriben los por defecto: `filename`, `content`, `prefix`, `separator` y `length` |
+
+Recursos:
+
+- `local_file.pet`: crea `saludo.txt` (`var.filename`) con el valor `statement2` del mapa `var.file-content`.
+- `random_pet.my-pet`: genera un nombre aleatorio con prefijo `var.prefix[3]` (`Madam`), `var.length` palabras y separador `var.separator`.
+- `local_file.pet-name`: crea `<nombre>.txt` con el nombre generado (p. ej. `Madam_rapid_gar.txt`). Depende de forma implícita de `random_pet.my-pet.id`.
+
+Tipos de variable que se practican: `string`, `number` (`length`), `bool` (`password_change`), `list(string)` (`prefix`), `map` (`file-content`) y `object` (`student`). `content`, `password_change` y `student` están declaradas pero `main.tf` no las usa todavía.
+
+### Uso (clase 2)
+
+```bash
+cd terraform/clase2
+terraform init
+terraform plan
+terraform apply
+terraform destroy      # para limpiar
+```
+
+## Buenas prácticas
+
+No subas al repo `terraform.tfstate`, `.terraform/` ni ficheros con secretos (`*.tfvars` con contraseñas). El `.gitignore` solo cubre `/terraform/terraform.tfstate*`, así que los `terraform.tfstate` y `terraform.tfstate.backup` de `clase2/` hoy están versionados: conviene ignorarlos (`terraform/**/terraform.tfstate*`) y quitarlos del índice con `git rm --cached`.
