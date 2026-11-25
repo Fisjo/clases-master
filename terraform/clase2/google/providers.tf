@@ -8,5 +8,7 @@ terraform {
 }
 
 provider "google" {
-  # Configuration options
+    project = "edem-108"
+    region  = "europe-southwest1"
+    zone    = "europe-southwest1-a"
 }
