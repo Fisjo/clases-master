@@ -81,6 +81,7 @@ Este repositorio reúne los ejercicios y apuntes de las clases del máster: Pyth
 - `terraform/`: clases de Terraform e IaC (Pedro Nieto), con su resumen en [`terraform/README.md`](terraform/README.md). Cada clase es un proyecto de Terraform independiente:
   - `clase1/clase1.tf`: crea un repositorio de GitHub completo con código (repositorio, ramas `main` y `develop`, colaborador, protección de ramas, secret de Actions y commit/push de un fichero generado). No declara los providers: hay que añadirlos antes de ejecutarlo.
   - `clase2/`: ejercicio local con los providers `local` y `random`: variables de distintos tipos (`string`, `number`, `bool`, `list`, `map`, `object`), `terraform.tfvars` y un nombre aleatorio con `random_pet` que se guarda en un fichero.
+  - `clase2/google/`: despliega una VM `e2-micro` de Compute Engine en Google Cloud con el provider `google` (necesita credenciales de GCP).
   - Se trabajan: IaC frente a configuración manual, estado deseado y `terraform.tfstate`, flujo `init` → `validate` → `plan` → `apply` → `destroy`, providers, variables (incluida una `sensitive`) y dependencias (implícitas y `depends_on`).
 
 - `vibe-coding/`: curso de vibecoding de David Ortega (EDEM), con el resumen en [`vibe-coding/README.md`](vibe-coding/README.md): cómo construir software con un agente de programación (Claude Code u OpenCode). Incluye el `CLAUDE.md` con las reglas de trabajo del curso y `ejercicio-calculadora/`, una calculadora de hipoteca (sistema francés) en `index.html` con la lógica en `calc.js` y sus tests en `calc.test.js`. Se trabajan: las cuatro piezas de un buen encargo, contexto del proyecto (`CLAUDE.md` / `AGENTS.md`), modo plan, pasos pequeños con git, verificación, claves en `.env`, seguridad y publicación.
@@ -166,7 +167,7 @@ Necesitas tener instalado:
 - Docker y Docker Compose (para las clases de `docker/` y el reto final de `sql/`)
 - Para los notebooks de `data-science/`: Jupyter (o VS Code con la extensión Jupyter) y NumPy, pandas, Matplotlib y Seaborn (`pip install numpy pandas matplotlib seaborn ipykernel`)
 - Para `apis/`: FastAPI y sus dependencias (`pip install "fastapi[standard]" bcrypt PyJWT httpx python-dotenv PyMySQL cryptography`) y, para `06b-mysql-database`, Docker
-- Para `terraform/`: [Terraform](https://developer.hashicorp.com/terraform/install) y, solo para `clase1`, un token de GitHub (`GITHUB_TOKEN`)
+- Para `terraform/`: [Terraform](https://developer.hashicorp.com/terraform/install) un token de GitHub (`GITHUB_TOKEN`) para `clase1` y credenciales de Google Cloud para `clase2/google`
 - Para `vibe-coding/ejercicio-calculadora`: Node.js (para ejecutar los tests con `node --test`)
 - Un cliente de PostgreSQL para las clases de SQL: pgAdmin (de [clase-docker3](docker/clase-docker3/README.md)) o la extensión PostgreSQL de VS Code
 
@@ -262,6 +263,16 @@ La clase 2 es local y no necesita credenciales:
 
 ```bash
 cd terraform/clase2
+terraform init
+terraform apply
+terraform destroy
+```
+
+La parte de Google Cloud (`clase2/google`) necesita credenciales de GCP y crea una VM que puede generar coste:
+
+```bash
+cd terraform/clase2/google
+gcloud auth application-default login
 terraform init
 terraform apply
 terraform destroy

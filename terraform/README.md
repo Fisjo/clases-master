@@ -6,6 +6,7 @@ Material de la clase de **Terraform e IaC** (Pedro Nieto, Máster en IA, Big Dat
 |---|---|
 | [`clase1/`](clase1/clase1.tf) | Crear un repositorio de GitHub completo con Terraform |
 | [`clase2/`](clase2) | Variables, tipos y el provider `random`, generando ficheros en local |
+| [`clase2/google/`](clase2/google) | Ejercicio con Google Cloud: una VM de Compute Engine con el provider `google` |
 
 ## Resumen de la presentación (`Terraform.pdf`)
 
@@ -84,6 +85,29 @@ terraform apply
 terraform destroy      # para limpiar
 ```
 
+## Clase 2 (Google Cloud): `clase2/google/`
+
+Proyecto independiente (su propio `terraform init` y estado) que despliega una VM en Google Cloud. **Necesita una cuenta de GCP con credenciales** y crea recursos que pueden generar coste.
+
+| Fichero | Contenido |
+|---|---|
+| `providers.tf` | Provider `hashicorp/google` (versión `8.12.0`) con proyecto `edem-108`, región `europe-southwest1` y zona `europe-southwest1-a` |
+| `main.tf` | Recurso `google_compute_instance.vm_instance` |
+| `variables.tf` | Variables del proyecto (actualmente vacío) |
+
+La VM se llama `terraform-instance-nacho`, es de tipo `e2-micro`, usa la imagen `debian-cloud/debian-12` y se conecta a la red `default` con una IP externa (`access_config` vacío).
+
+### Uso (clase 2, Google)
+
+```bash
+cd terraform/clase2/google
+gcloud auth application-default login   # credenciales para el provider
+terraform init
+terraform plan
+terraform apply
+terraform destroy      # para limpiar y evitar costes
+```
+
 ## Buenas prácticas
 
-No subas al repo `terraform.tfstate`, `.terraform/` ni ficheros con secretos (`*.tfvars` con contraseñas). El `.gitignore` solo cubre `/terraform/terraform.tfstate*`, así que los `terraform.tfstate` y `terraform.tfstate.backup` de `clase2/` hoy están versionados: conviene ignorarlos (`terraform/**/terraform.tfstate*`) y quitarlos del índice con `git rm --cached`.
+No subas al repo `terraform.tfstate`, `.terraform/` ni ficheros con secretos (`*.tfvars` con contraseñas). El `.gitignore` ya ignora `.terraform`, `.terraform.lock.hcl`, `terraform.lock.hcl` y `*.tfstate*` en cualquier carpeta, y los `tfstate` que estaban versionados en `clase2/` y `clase2/google/` se han sacado del índice con `git rm --cached`. El estado puede contener datos sensibles; para trabajar en equipo usa un estado remoto (p. ej. Google Cloud Storage).
