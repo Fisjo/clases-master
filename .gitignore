@@ -7,3 +7,7 @@ __pycache__/
 /data-science/clase2/data
 /venv
 .env
+.terraform
+.terraform.lock.hcl
+/terraform/terraform.tfstate
+/terraform/terraform.tfstate.backup
