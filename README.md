@@ -1,6 +1,6 @@
 # Repositorio de clases de Máster de IA, Data & Cloud @ EDEM Escuela de Empresarios
 
-Este repositorio reúne los ejercicios y apuntes de las clases del máster: Python, Git y GitHub Actions, Docker, SQL con PostgreSQL, APIs con FastAPI y Data Science con NumPy, pandas y visualización, además de un reto final que integra SQL, Python y Docker. No se trata de un proyecto de producción, sino de un espacio para practicar y documentar cada clase (casi todas tienen su propio `README.md`).
+Este repositorio reúne los ejercicios y apuntes de las clases del máster: Python, Git y GitHub Actions, Docker, Terraform, SQL con PostgreSQL, APIs con FastAPI y Data Science con NumPy, pandas y visualización, además de un reto final que integra SQL, Python y Docker. No se trata de un proyecto de producción, sino de un espacio para practicar y documentar cada clase (casi todas tienen su propio `README.md`).
 
 ## Estructura del repositorio
 
@@ -78,6 +78,14 @@ Este repositorio reúne los ejercicios y apuntes de las clases del máster: Pyth
     - [`10-public-api`](apis/clase2/10-public-api/readme10.md): consumo de una API pública (OpenWeatherMap) con `httpx`, y claves en `.env`.
     - [`11-jwt-auth`](apis/clase2/11-jwt-auth/readme11.md): autenticación con JWT (access y refresh tokens, claims `exp`/`iss`/`aud`/`jti`, `/logout` con revocación).
 
+- `terraform/`: clase de Terraform e IaC (Pedro Nieto), con su resumen en [`terraform/README.md`](terraform/README.md). Contiene `main.tf`, que crea un repositorio de GitHub completo con código. Se trabajan:
+  - IaC frente a configuración manual, estado deseado y `terraform.tfstate`
+  - flujo `init` → `validate` → `plan` → `apply` → `destroy`
+  - providers (`github`, `git`, `local`), variables (incluida una `sensitive`) y dependencias (implícitas y `depends_on`)
+  - recursos de GitHub: repositorio, ramas `main` y `develop`, colaborador, protección de ramas y secret de Actions
+  - commit y push de un fichero generado con Terraform
+  - `main.tf` no declara los providers: hay que añadirlos antes de ejecutarlo
+
 - `data-science/clase1/numpy.ipynb`: primera clase de Data Science, un notebook de Jupyter sobre NumPy. Cada celda de código tiene encima una celda de markdown que la explica, y termina con retos prácticos (simular las bicis disponibles en una red de estaciones, temperaturas, etc.). Se trabajan las siguientes funciones, métodos y atributos de NumPy:
   - **Importación y versión:** `import numpy as np`, `np.__version__`
   - **Atributos de un array:** `shape`, `ndim`, `size`, `dtype`
@@ -138,6 +146,7 @@ Este proyecto busca practicar:
 - colaboración en GitHub: pull requests, forks, reglas de protección de ramas, `CODEOWNERS` y plantillas de PR
 - automatización con GitHub Actions: workflows, jobs, matrices, artefactos, outputs, secretos y servicios
 - contenedores con Docker: imágenes, Dockerfile, volúmenes y Docker Compose
+- infraestructura como código con Terraform: providers, variables, dependencias, plan/apply y gestión de GitHub como código
 - conexión de una aplicación Python a PostgreSQL
 - SQL en PostgreSQL: tablas, consultas, agregados, relaciones con claves foráneas, `JOIN` y subconsultas
 - APIs REST con FastAPI: rutas, métodos HTTP, parámetros, validación con Pydantic, códigos de estado, paginación y errores estándar (RFC 9457)
@@ -157,6 +166,7 @@ Necesitas tener instalado:
 - Docker y Docker Compose (para las clases de `docker/` y el reto final de `sql/`)
 - Para los notebooks de `data-science/`: Jupyter (o VS Code con la extensión Jupyter) y NumPy, pandas, Matplotlib y Seaborn (`pip install numpy pandas matplotlib seaborn ipykernel`)
 - Para `apis/`: FastAPI y sus dependencias (`pip install "fastapi[standard]" bcrypt PyJWT httpx python-dotenv PyMySQL cryptography`) y, para `06b-mysql-database`, Docker
+- Para `terraform/`: [Terraform](https://developer.hashicorp.com/terraform/install) y un token de GitHub (`GITHUB_TOKEN`)
 - Un cliente de PostgreSQL para las clases de SQL: pgAdmin (de [clase-docker3](docker/clase-docker3/README.md)) o la extensión PostgreSQL de VS Code
 
 ## Cómo ejecutarlo
@@ -237,6 +247,16 @@ python3 github-actions/escaneo_seguridad.py .github/workflows/data/ventas.json
 
 Para el desafío final hay que crear antes el secreto `DISCORD_WEBHOOK` en Settings → Secrets and variables → Actions.
 
+Para Terraform (hay que declarar antes los providers; detalle en [`terraform/README.md`](terraform/README.md)):
+
+```bash
+cd terraform
+export GITHUB_TOKEN=<tu_token>
+terraform init
+terraform plan -var "password=<secreto>"
+terraform apply -var "password=<secreto>"
+```
+
 Para el reto final de SQL (requiere el `docker-compose.yml` y el `Dockerfile` del proyecto local, ver [su README](sql/sql-reto-final/README.md)):
 
 ```bash
@@ -253,4 +273,4 @@ La carpeta `git/` no es un proyecto funcional complejo ni un producto final. Fue
 
 ## Estado del proyecto
 
-Proyecto de aprendizaje en curso: se va ampliando con cada clase del máster (Python, Git y GitHub Actions, Docker, SQL (junto con el reto final de SQL), APIs con FastAPI y Data Science con NumPy, pandas y visualización con Matplotlib y Seaborn).
+Proyecto de aprendizaje en curso: se va ampliando con cada clase del máster (Python, Git y GitHub Actions, Docker, Terraform, SQL (junto con el reto final de SQL), APIs con FastAPI y Data Science con NumPy, pandas y visualización con Matplotlib y Seaborn).
