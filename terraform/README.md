@@ -15,7 +15,7 @@ Material de la clase de **Terraform e IaC** (Pedro Nieto, Máster en IA, Big Dat
 9. **Repetición**: `count` y `count.index`, junto con `length()`.
 10. **Import y remote state**: `terraform import` para traer recursos existentes al estado; estado remoto para colaborar.
 
-## Ejercicio: `main.tf`
+## Ejercicio: `clase1.tf`
 
 Crea con Terraform lo mismo que en la diapositiva 9 se hacía a mano (repo con ramas `main` y `develop`), añadiendo protección y secretos. Recursos, en orden lógico:
 
@@ -38,7 +38,7 @@ Variables:
 
 Conceptos de la clase que aparecen: dependencias implícitas (`github_repository.example.name`), explícitas (`depends_on`), variables, `sensitive` y varios providers (`github`, `git`, `local`).
 
-> Nota: `main.tf` no declara los providers (`required_providers` / `provider`). Hay que añadirlos (p. ej. en un `provider.tf`) con la autenticación de GitHub antes de ejecutar.
+> Nota: `clase1.tf` no declara los providers (`required_providers` / `provider`). Hay que añadirlos (p. ej. en un `provider.tf`) con la autenticación de GitHub antes de ejecutar.
 
 ## Uso
 

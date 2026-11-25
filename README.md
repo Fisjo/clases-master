@@ -78,13 +78,13 @@ Este repositorio reúne los ejercicios y apuntes de las clases del máster: Pyth
     - [`10-public-api`](apis/clase2/10-public-api/readme10.md): consumo de una API pública (OpenWeatherMap) con `httpx`, y claves en `.env`.
     - [`11-jwt-auth`](apis/clase2/11-jwt-auth/readme11.md): autenticación con JWT (access y refresh tokens, claims `exp`/`iss`/`aud`/`jti`, `/logout` con revocación).
 
-- `terraform/`: clase de Terraform e IaC (Pedro Nieto), con su resumen en [`terraform/README.md`](terraform/README.md). Contiene `main.tf`, que crea un repositorio de GitHub completo con código. Se trabajan:
+- `terraform/`: clase de Terraform e IaC (Pedro Nieto), con su resumen en [`terraform/README.md`](terraform/README.md). Contiene `clase1.tf`, que crea un repositorio de GitHub completo con código. Se trabajan:
   - IaC frente a configuración manual, estado deseado y `terraform.tfstate`
   - flujo `init` → `validate` → `plan` → `apply` → `destroy`
   - providers (`github`, `git`, `local`), variables (incluida una `sensitive`) y dependencias (implícitas y `depends_on`)
   - recursos de GitHub: repositorio, ramas `main` y `develop`, colaborador, protección de ramas y secret de Actions
   - commit y push de un fichero generado con Terraform
-  - `main.tf` no declara los providers: hay que añadirlos antes de ejecutarlo
+  - `clase1.tf` no declara los providers: hay que añadirlos antes de ejecutarlo
 
 - `data-science/clase1/numpy.ipynb`: primera clase de Data Science, un notebook de Jupyter sobre NumPy. Cada celda de código tiene encima una celda de markdown que la explica, y termina con retos prácticos (simular las bicis disponibles en una red de estaciones, temperaturas, etc.). Se trabajan las siguientes funciones, métodos y atributos de NumPy:
   - **Importación y versión:** `import numpy as np`, `np.__version__`
