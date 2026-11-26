@@ -4,7 +4,7 @@ resource "google_compute_instance" "vm_instance_debian" {
 
     boot_disk {
         initialize_params {
-        image = var.os["debian"]
+        image = var.os[debian]
         size = var.size
         }
     }
@@ -23,7 +23,7 @@ resource "google_compute_instance" "vm_instance_ubuntu" {
 
     boot_disk {
         initialize_params {
-        image = var.os["ubuntu"]
+        image = var.os[ubuntu]
         size = var.size
         }
     }
