@@ -1,3 +1,11 @@
+
+terraform {
+  backend "gcs" {
+    bucket  = "bucket-nacho-2"
+    prefix  = "terraform/state/edem-108"
+  }
+}
+
 resource "google_compute_instance" "vm_instance_debian" {
     name         = "terraform-instance-debian"
     machine_type = "e2-micro"
