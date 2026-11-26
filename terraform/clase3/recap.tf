@@ -1,0 +1,37 @@
+resource "google_compute_instance" "vm_instance_debian" {
+    name         = "terraform-instance-debian"
+    machine_type = "e2-micro"
+
+    boot_disk {
+        initialize_params {
+        image = "debian-cloud/debian-12"
+        size = 10
+        }
+    }
+
+    network_interface {
+        # A default network is created for all GCP projects
+        network = "default"
+        access_config {
+        }
+    }
+}
+
+resource "google_compute_instance" "vm_instance_ubuntu" {
+    name         = "terraform-instance-ubuntu"
+    machine_type = "e2-micro"
+
+    boot_disk {
+        initialize_params {
+        image = "ubuntu-os-cloud/ubuntu-2404-lts-amd64"
+        size = 50
+        }
+    }
+
+    network_interface {
+        # A default network is created for all GCP projects
+        network = "default"
+        access_config {
+        }
+    }
+}
