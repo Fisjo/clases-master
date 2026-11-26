@@ -1,14 +1,1 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "8.12.0"
-    }
-  }
-}
-
-provider "google" {
-  project = var.project
-  region  = var.region
-  zone    = var.zone
-}
+../../_shared/gcp/providers.tf

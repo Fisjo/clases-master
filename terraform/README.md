@@ -143,6 +143,12 @@ terraform apply
 terraform destroy      # para limpiar y evitar costes
 ```
 
+## Organización y ahorro de espacio
+
+- **`_shared/gcp/`**: `providers.tf` y `variables.tf` (proyecto, región y zona) comunes a todos los proyectos de Google Cloud. Cada proyecto los enlaza con un *symlink* (`providers.tf -> ../../_shared/gcp/providers.tf`), así no se repiten y cada carpeta conserva su propio `terraform init` y estado. Si un ejercicio necesita otra zona, la define en el recurso o en un `terraform.tfvars`.
+- **Caché de providers**: `~/.terraformrc` define `plugin_cache_dir = "$HOME/.terraform.d/plugin-cache"`. El provider `google` (~125 MB) se descarga una sola vez y cada `.terraform/` solo guarda un enlace (0 B en vez de 125 MB por carpeta). En otra máquina: `mkdir -p ~/.terraform.d/plugin-cache` y crea ese `~/.terraformrc`.
+- Los `.terraform/` se pueden borrar sin miedo: `terraform init` los regenera.
+
 ## Buenas prácticas
 
 No subas al repo `terraform.tfstate`, `.terraform/` ni ficheros con secretos (`*.tfvars` con contraseñas). El `.gitignore` ya ignora `.terraform`, `.terraform.lock.hcl`, `terraform.lock.hcl` y `*.tfstate*` en cualquier carpeta, y los `tfstate` que estaban versionados en `clase2/` y `clase2/google/` se han sacado del índice con `git rm --cached`. El estado puede contener datos sensibles; para trabajar en equipo usa un estado remoto (p. ej. Google Cloud Storage, como en la clase 3).
