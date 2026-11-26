@@ -78,11 +78,13 @@ Este repositorio reúne los ejercicios y apuntes de las clases del máster: Pyth
     - [`10-public-api`](apis/clase2/10-public-api/readme10.md): consumo de una API pública (OpenWeatherMap) con `httpx`, y claves en `.env`.
     - [`11-jwt-auth`](apis/clase2/11-jwt-auth/readme11.md): autenticación con JWT (access y refresh tokens, claims `exp`/`iss`/`aud`/`jti`, `/logout` con revocación).
 
-- `terraform/`: clases de Terraform e IaC (Pedro Nieto), con su resumen en [`terraform/README.md`](terraform/README.md). Cada clase es un proyecto de Terraform independiente:
+- `terraform/`: clases de Terraform e IaC (Pedro Nieto), con su resumen en [`terraform/README.md`](terraform/README.md). Cada carpeta con ficheros `.tf` es un proyecto de Terraform independiente; los `providers.tf` y `variables.tf` de Google Cloud están una sola vez en `terraform/_shared/gcp/` (enlazados con symlinks) y los providers se descargan una vez en una caché compartida (`~/.terraform.d/plugin-cache`) para que cada `.terraform/` no ocupe ~125 MB:
   - `clase1/clase1.tf`: crea un repositorio de GitHub completo con código (repositorio, ramas `main` y `develop`, colaborador, protección de ramas, secret de Actions y commit/push de un fichero generado). No declara los providers: hay que añadirlos antes de ejecutarlo.
   - `clase2/`: ejercicio local con los providers `local` y `random`: variables de distintos tipos (`string`, `number`, `bool`, `list`, `map`, `object`), `terraform.tfvars` y un nombre aleatorio con `random_pet` que se guarda en un fichero.
   - `clase2/google/`: despliega una VM `e2-micro` de Compute Engine en Google Cloud con el provider `google` (necesita credenciales de GCP).
-  - Se trabajan: IaC frente a configuración manual, estado deseado y `terraform.tfstate`, flujo `init` → `validate` → `plan` → `apply` → `destroy`, providers, variables (incluida una `sensitive`) y dependencias (implícitas y `depends_on`).
+  - `clase3/recap/`: recap en Google Cloud (necesita credenciales de GCP): dos VMs `e2-micro` (Debian y Ubuntu) cuya imagen y tamaño de disco salen de las variables `os` (mapa) y `size`, un bucket de Cloud Storage y el estado guardado en un backend remoto `gcs` (bucket `bucket-nacho-2`, que debe existir antes del `init`).
+  - `clase3/ejercicio1/`: servicio de Cloud Run (`hangman`) con un `output` de la URL. `clase3/ejercicio2/`: bucket y VM alineados con el estado existente (sin reemplazos en el `plan`). `clase3/ejercicio3/`: esqueleto vacío.
+  - Se trabajan: IaC frente a configuración manual, estado deseado y `terraform.tfstate`, flujo `init` → `validate` → `plan` → `apply` → `destroy`, providers, variables (incluida una `sensitive`), dependencias (implícitas y `depends_on`) y estado remoto (backend `gcs`).
 
 - `vibe-coding/`: curso de vibecoding de David Ortega (EDEM), con el resumen en [`vibe-coding/README.md`](vibe-coding/README.md): cómo construir software con un agente de programación (Claude Code u OpenCode). Incluye el `CLAUDE.md` con las reglas de trabajo del curso y `ejercicio-calculadora/`, una calculadora de hipoteca (sistema francés) en `index.html` con la lógica en `calc.js` y sus tests en `calc.test.js`. Se trabajan: las cuatro piezas de un buen encargo, contexto del proyecto (`CLAUDE.md` / `AGENTS.md`), modo plan, pasos pequeños con git, verificación, claves en `.env`, seguridad y publicación.
 
@@ -146,7 +148,7 @@ Este proyecto busca practicar:
 - colaboración en GitHub: pull requests, forks, reglas de protección de ramas, `CODEOWNERS` y plantillas de PR
 - automatización con GitHub Actions: workflows, jobs, matrices, artefactos, outputs, secretos y servicios
 - contenedores con Docker: imágenes, Dockerfile, volúmenes y Docker Compose
-- infraestructura como código con Terraform: providers, variables de distintos tipos, `tfvars`, dependencias, plan/apply y gestión de GitHub como código
+- infraestructura como código con Terraform: providers, variables de distintos tipos, `tfvars`, dependencias, plan/apply, estado remoto en Google Cloud Storage y gestión de GitHub y Google Cloud como código
 - desarrollo con agentes de programación (vibecoding): planificar, trabajar en pasos pequeños, verificar con tests y revisar la seguridad
 - conexión de una aplicación Python a PostgreSQL
 - SQL en PostgreSQL: tablas, consultas, agregados, relaciones con claves foráneas, `JOIN` y subconsultas
@@ -167,7 +169,7 @@ Necesitas tener instalado:
 - Docker y Docker Compose (para las clases de `docker/` y el reto final de `sql/`)
 - Para los notebooks de `data-science/`: Jupyter (o VS Code con la extensión Jupyter) y NumPy, pandas, Matplotlib y Seaborn (`pip install numpy pandas matplotlib seaborn ipykernel`)
 - Para `apis/`: FastAPI y sus dependencias (`pip install "fastapi[standard]" bcrypt PyJWT httpx python-dotenv PyMySQL cryptography`) y, para `06b-mysql-database`, Docker
-- Para `terraform/`: [Terraform](https://developer.hashicorp.com/terraform/install) un token de GitHub (`GITHUB_TOKEN`) para `clase1` y credenciales de Google Cloud para `clase2/google`
+- Para `terraform/`: [Terraform](https://developer.hashicorp.com/terraform/install) un token de GitHub (`GITHUB_TOKEN`) para `clase1` y credenciales de Google Cloud para `clase2/google` y `clase3`
 - Para `vibe-coding/ejercicio-calculadora`: Node.js (para ejecutar los tests con `node --test`)
 - Un cliente de PostgreSQL para las clases de SQL: pgAdmin (de [clase-docker3](docker/clase-docker3/README.md)) o la extensión PostgreSQL de VS Code
 
@@ -272,6 +274,16 @@ La parte de Google Cloud (`clase2/google`) necesita credenciales de GCP y crea u
 
 ```bash
 cd terraform/clase2/google
+gcloud auth application-default login
+terraform init
+terraform apply
+terraform destroy
+```
+
+La clase 3 también usa Google Cloud. `recap` (dos VMs y un bucket, con el estado en el bucket remoto `bucket-nacho-2`, que debe existir antes) y `ejercicio1`, `ejercicio2` y `ejercicio3` son proyectos independientes:
+
+```bash
+cd terraform/clase3/recap      # o ejercicio1, ejercicio2, ejercicio3
 gcloud auth application-default login
 terraform init
 terraform apply

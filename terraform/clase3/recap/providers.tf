@@ -1,0 +1,1 @@
+../../_shared/gcp/providers.tf

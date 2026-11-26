@@ -1,12 +1,17 @@
 # Terraform e IaC
 
-Material de la clase de **Terraform e IaC** (Pedro Nieto, Máster en IA, Big Data y Cloud – EDEM, Bloque 1: Cloud Data). Cada clase tiene su propia carpeta, que es un proyecto de Terraform independiente (con su propio `terraform init` y su propio estado):
+Material de la clase de **Terraform e IaC** (Pedro Nieto, Máster en IA, Big Data y Cloud – EDEM, Bloque 1: Cloud Data). Cada carpeta con ficheros `.tf` es un proyecto de Terraform independiente (con su propio `terraform init` y su propio estado):
 
 | Carpeta | Contenido |
 |---|---|
 | [`clase1/`](clase1/clase1.tf) | Crear un repositorio de GitHub completo con Terraform |
 | [`clase2/`](clase2) | Variables, tipos y el provider `random`, generando ficheros en local |
 | [`clase2/google/`](clase2/google) | Ejercicio con Google Cloud: una VM de Compute Engine con el provider `google` |
+| [`clase3/recap/`](clase3/recap) | Recap en Google Cloud: dos VMs con variables, un bucket y el estado en un backend remoto (GCS) |
+| [`clase3/ejercicio1/`](clase3/ejercicio1) | Servicio de Cloud Run (`hangman`) con un `output` de la URL |
+| [`clase3/ejercicio2/`](clase3/ejercicio2) | Bucket y VM de Google Cloud alineados con el estado existente (sin reemplazos) |
+| [`clase3/ejercicio3/`](clase3/ejercicio3) | Esqueleto vacío para el siguiente ejercicio |
+| [`_shared/gcp/`](_shared/gcp) | `providers.tf` y `variables.tf` comunes a todos los proyectos de Google Cloud |
 
 ## Resumen de la presentación (`Terraform.pdf`)
 
@@ -91,9 +96,8 @@ Proyecto independiente (su propio `terraform init` y estado) que despliega una V
 
 | Fichero | Contenido |
 |---|---|
-| `providers.tf` | Provider `hashicorp/google` (versión `8.12.0`) con proyecto `edem-108`, región `europe-southwest1` y zona `europe-southwest1-a` |
+| `providers.tf`, `variables.tf` | Symlinks a `_shared/gcp/` (provider `hashicorp/google` `8.12.0`, proyecto `edem-108`, región `europe-southwest1`, zona `-a`) |
 | `main.tf` | Recurso `google_compute_instance.vm_instance` |
-| `variables.tf` | Variables del proyecto (actualmente vacío) |
 
 La VM se llama `terraform-instance-nacho`, es de tipo `e2-micro`, usa la imagen `debian-cloud/debian-12` y se conecta a la red `default` con una IP externa (`access_config` vacío).
 
@@ -108,6 +112,47 @@ terraform apply
 terraform destroy      # para limpiar y evitar costes
 ```
 
+## Clase 3: `clase3/`
+
+Todo en Google Cloud (**necesita credenciales de GCP** y crea recursos que pueden generar coste). Cada subcarpeta es un proyecto independiente (su propio `terraform init` y estado) y comparte `providers.tf` y `variables.tf` (proyecto `edem-108`, región `europe-southwest1`, zona `europe-southwest1-a`) mediante symlinks a [`_shared/gcp/`](_shared/gcp). Cada una solo tiene su propio código:
+
+| Carpeta | Fichero | Contenido |
+|---|---|---|
+| `recap/` | `recap.tf`, `variables-recap.tf` | Backend `gcs`, dos VMs y un bucket; variables `os` y `size` |
+| `ejercicio1/` | `main.tf` | `google_cloud_run_v2_service.default` (imagen `hangman`, 1 instancia, puerto 5173) y `output "url"` |
+| `ejercicio2/` | `main.tf` | `google_storage_bucket.bucket-nacho-gcp` (ubicación `US`) y `google_compute_instance.gci-nacho` (`instance-nacho-gcp`, `e2-micro`, Debian 13, zona `-b`, con `service_account`) |
+| `ejercicio3/` | `main.tf` | Vacío por ahora |
+
+### `recap/`
+
+- `google_compute_instance.vm_instance_debian`: VM `terraform-instance-debian` (`e2-micro`) con la imagen `var.os["debian"]` y un disco de `var.size` GB.
+- `google_compute_instance.vm_instance_ubuntu`: VM `terraform-instance-ubuntu` (`e2-micro`) con la imagen `var.os["ubuntu"]` y el mismo disco.
+- `google_storage_bucket.bucket-nacho`: bucket `bucket-nacho` en `EU` con `force_destroy = true`.
+- Variables: `os` (mapa con las imágenes `debian` y `ubuntu`, se usa como `var.os["debian"]`) y `size` (disco en GB, por defecto `50`).
+
+**Estado remoto:** el bloque `backend "gcs"` guarda el estado en el bucket `bucket-nacho-2` (prefijo `terraform/state/edem-108`). Ese bucket **no lo crea este proyecto**: tiene que existir antes del `terraform init` (si no, falla con `bucket doesn't exist`). Si ya habías hecho `init` con estado local, `terraform init -migrate-state` ofrece migrarlo.
+
+### `ejercicio2/`
+
+Ejercicio para **alinear el código con un estado existente**: se leyó el `terraform plan`, que marcaba reemplazos (`# forces replacement`), y se ajustaron `name`, `image`, `key_revocation_action_type`, `zone`, `metadata`, `service_account` y la `location` del bucket hasta que el plan no destruía nada.
+
+### Uso (clase 3)
+
+```bash
+cd terraform/clase3/<recap|ejercicio1|ejercicio2|ejercicio3>
+gcloud auth application-default login   # credenciales para el provider y el backend
+terraform init
+terraform plan
+terraform apply
+terraform destroy      # para limpiar y evitar costes
+```
+
+## Organización y ahorro de espacio
+
+- **`_shared/gcp/`**: `providers.tf` y `variables.tf` (proyecto, región y zona) comunes a todos los proyectos de Google Cloud. Cada proyecto los enlaza con un *symlink* (`providers.tf -> ../../_shared/gcp/providers.tf`), así no se repiten y cada carpeta conserva su propio `terraform init` y estado. Si un ejercicio necesita otra zona, la define en el recurso o en un `terraform.tfvars`.
+- **Caché de providers**: `~/.terraformrc` define `plugin_cache_dir = "$HOME/.terraform.d/plugin-cache"`. El provider `google` (~125 MB) se descarga una sola vez y cada `.terraform/` solo guarda un enlace (0 B en vez de 125 MB por carpeta). En otra máquina: `mkdir -p ~/.terraform.d/plugin-cache` y crea ese `~/.terraformrc`.
+- Los `.terraform/` se pueden borrar sin miedo: `terraform init` los regenera.
+
 ## Buenas prácticas
 
-No subas al repo `terraform.tfstate`, `.terraform/` ni ficheros con secretos (`*.tfvars` con contraseñas). El `.gitignore` ya ignora `.terraform`, `.terraform.lock.hcl`, `terraform.lock.hcl` y `*.tfstate*` en cualquier carpeta, y los `tfstate` que estaban versionados en `clase2/` y `clase2/google/` se han sacado del índice con `git rm --cached`. El estado puede contener datos sensibles; para trabajar en equipo usa un estado remoto (p. ej. Google Cloud Storage).
+No subas al repo `terraform.tfstate`, `.terraform/` ni ficheros con secretos (`*.tfvars` con contraseñas). El `.gitignore` ya ignora `.terraform`, `.terraform.lock.hcl`, `terraform.lock.hcl` y `*.tfstate*` en cualquier carpeta, y los `tfstate` que estaban versionados en `clase2/` y `clase2/google/` se han sacado del índice con `git rm --cached`. El estado puede contener datos sensibles; para trabajar en equipo usa un estado remoto (p. ej. Google Cloud Storage, como en la clase 3).
